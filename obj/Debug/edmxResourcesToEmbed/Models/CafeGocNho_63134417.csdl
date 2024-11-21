@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CafeGocNho_63134417Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="BAN">
+    <Key>
+      <PropertyRef Name="MABAN" />
+    </Key>
+    <Property Name="MABAN" Type="Int32" Nullable="false" />
+    <Property Name="TINHTRANG" Type="Int16" />
+    <NavigationProperty Name="HOADON" Relationship="Self.FK_HOADON_BAN_PHIEU_BAN" FromRole="BAN" ToRole="HOADON" />
+  </EntityType>
+  <EntityType Name="CHITIETHOADON">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="MAHD" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="MAMH" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SOLUONG" Type="Int32" />
+    <NavigationProperty Name="MENU" Relationship="Self.FK_CHITIETH_CHI_TIET__MENU" FromRole="CHITIETHOADON" ToRole="MENU" />
+    <NavigationProperty Name="HOADON" Relationship="Self.FK_CHITIETH_PHIEU_XUA_HOADON" FromRole="CHITIETHOADON" ToRole="HOADON" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="HOADON">
+    <Key>
+      <PropertyRef Name="MAHD" />
+    </Key>
+    <Property Name="MAHD" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="MABAN" Type="Int32" />
+    <Property Name="MANV" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="THOIGIAN" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="BAN" Relationship="Self.FK_HOADON_BAN_PHIEU_BAN" FromRole="HOADON" ToRole="BAN" />
+    <NavigationProperty Name="CHITIETHOADON" Relationship="Self.FK_CHITIETH_PHIEU_XUA_HOADON" FromRole="HOADON" ToRole="CHITIETHOADON" />
+    <NavigationProperty Name="NHANVIEN" Relationship="Self.FK_HOADON_NHAN_VIEN_NHANVIEN" FromRole="HOADON" ToRole="NHANVIEN" />
+    <Property Name="THANHTOAN" Type="Int16" />
+    <Property Name="GIAMGIA" Type="Int32" />
+    <Property Name="NV_THANHTOAN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="NHANVIEN1" Relationship="CafeGocNho_63134417Model.FK_HOADON_NHANVIEN_THANHTOAN" FromRole="HOADON" ToRole="NHANVIEN" />
+  </EntityType>
+  <EntityType Name="LOAIMATHANG">
+    <Key>
+      <PropertyRef Name="MALOAI" />
+    </Key>
+    <Property Name="MALOAI" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TENLOAI" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="MENU" Relationship="Self.FK_MENU_REFERENCE_LOAIMATH" FromRole="LOAIMATHANG" ToRole="MENU" />
+  </EntityType>
+  <EntityType Name="MENU">
+    <Key>
+      <PropertyRef Name="MAMH" />
+    </Key>
+    <Property Name="MAMH" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TENMH" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="GIACA" Type="Int32" />
+    <Property Name="DVT" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="MALOAI" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="CHITIETHOADON" Relationship="Self.FK_CHITIETH_CHI_TIET__MENU" FromRole="MENU" ToRole="CHITIETHOADON" />
+    <NavigationProperty Name="LOAIMATHANG" Relationship="Self.FK_MENU_REFERENCE_LOAIMATH" FromRole="MENU" ToRole="LOAIMATHANG" />
+    <Property Name="ANH" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="SOLUONGHANG" Type="Int32" />
+  </EntityType>
+  <EntityType Name="NHANVIEN">
+    <Key>
+      <PropertyRef Name="MANV" />
+    </Key>
+    <Property Name="MANV" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="HONV" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TENNV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="EMAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DIACHI" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="MATKHAU" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CHUCVU" Type="Int16" />
+    <Property Name="GIOITINH" Type="Int16" />
+    <Property Name="SDT" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="CCCD" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="HOADON" Relationship="Self.FK_HOADON_NHAN_VIEN_NHANVIEN" FromRole="NHANVIEN" ToRole="HOADON" />
+    <NavigationProperty Name="HOADON1" Relationship="CafeGocNho_63134417Model.FK_HOADON_NHANVIEN_THANHTOAN" FromRole="NHANVIEN" ToRole="HOADON" />
+  </EntityType>
+  <Association Name="FK_HOADON_BAN_PHIEU_BAN">
+    <End Role="BAN" Type="Self.BAN" Multiplicity="0..1" />
+    <End Role="HOADON" Type="Self.HOADON" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BAN">
+        <PropertyRef Name="MABAN" />
+      </Principal>
+      <Dependent Role="HOADON">
+        <PropertyRef Name="MABAN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CHITIETH_CHI_TIET__MENU">
+    <End Role="MENU" Type="Self.MENU" Multiplicity="1" />
+    <End Role="CHITIETHOADON" Type="Self.CHITIETHOADON" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MENU">
+        <PropertyRef Name="MAMH" />
+      </Principal>
+      <Dependent Role="CHITIETHOADON">
+        <PropertyRef Name="MAMH" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CHITIETH_PHIEU_XUA_HOADON">
+    <End Role="HOADON" Type="Self.HOADON" Multiplicity="1" />
+    <End Role="CHITIETHOADON" Type="Self.CHITIETHOADON" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HOADON">
+        <PropertyRef Name="MAHD" />
+      </Principal>
+      <Dependent Role="CHITIETHOADON">
+        <PropertyRef Name="MAHD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_HOADON_NHAN_VIEN_NHANVIEN">
+    <End Role="NHANVIEN" Type="Self.NHANVIEN" Multiplicity="0..1" />
+    <End Role="HOADON" Type="Self.HOADON" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NHANVIEN">
+        <PropertyRef Name="MANV" />
+      </Principal>
+      <Dependent Role="HOADON">
+        <PropertyRef Name="MANV" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MENU_REFERENCE_LOAIMATH">
+    <End Role="LOAIMATHANG" Type="Self.LOAIMATHANG" Multiplicity="0..1" />
+    <End Role="MENU" Type="Self.MENU" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LOAIMATHANG">
+        <PropertyRef Name="MALOAI" />
+      </Principal>
+      <Dependent Role="MENU">
+        <PropertyRef Name="MALOAI" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CafeGocNho_63134417Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BAN" EntityType="Self.BAN" />
+    <EntitySet Name="CHITIETHOADON" EntityType="Self.CHITIETHOADON" />
+    <EntitySet Name="HOADON" EntityType="Self.HOADON" />
+    <EntitySet Name="LOAIMATHANG" EntityType="Self.LOAIMATHANG" />
+    <EntitySet Name="MENU" EntityType="Self.MENU" />
+    <EntitySet Name="NHANVIEN" EntityType="Self.NHANVIEN" />
+    <AssociationSet Name="FK_HOADON_BAN_PHIEU_BAN" Association="Self.FK_HOADON_BAN_PHIEU_BAN">
+      <End Role="BAN" EntitySet="BAN" />
+      <End Role="HOADON" EntitySet="HOADON" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CHITIETH_CHI_TIET__MENU" Association="Self.FK_CHITIETH_CHI_TIET__MENU">
+      <End Role="MENU" EntitySet="MENU" />
+      <End Role="CHITIETHOADON" EntitySet="CHITIETHOADON" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CHITIETH_PHIEU_XUA_HOADON" Association="Self.FK_CHITIETH_PHIEU_XUA_HOADON">
+      <End Role="HOADON" EntitySet="HOADON" />
+      <End Role="CHITIETHOADON" EntitySet="CHITIETHOADON" />
+    </AssociationSet>
+    <AssociationSet Name="FK_HOADON_NHAN_VIEN_NHANVIEN" Association="Self.FK_HOADON_NHAN_VIEN_NHANVIEN">
+      <End Role="NHANVIEN" EntitySet="NHANVIEN" />
+      <End Role="HOADON" EntitySet="HOADON" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MENU_REFERENCE_LOAIMATH" Association="Self.FK_MENU_REFERENCE_LOAIMATH">
+      <End Role="LOAIMATHANG" EntitySet="LOAIMATHANG" />
+      <End Role="MENU" EntitySet="MENU" />
+    </AssociationSet>
+    <FunctionImport Name="HoaDon_TimKiem">
+      <Parameter Name="MAHD" Mode="In" Type="String" />
+      <Parameter Name="MABAN" Mode="In" Type="String" />
+      <Parameter Name="NGAYmin" Mode="In" Type="String" />
+      <Parameter Name="NGAYmax" Mode="In" Type="String" />
+      <Parameter Name="MANV" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="Menu_TimKiem">
+      <Parameter Name="MAMH" Mode="In" Type="String" />
+      <Parameter Name="TENMH" Mode="In" Type="String" />
+      <Parameter Name="GIACAmin" Mode="In" Type="String" />
+      <Parameter Name="GIACAmax" Mode="In" Type="String" />
+      <Parameter Name="DVT" Mode="In" Type="String" />
+      <Parameter Name="MALOAI" Mode="In" Type="String" />
+    </FunctionImport>
+    <AssociationSet Name="FK_HOADON_NHANVIEN_THANHTOAN" Association="CafeGocNho_63134417Model.FK_HOADON_NHANVIEN_THANHTOAN">
+      <End Role="NHANVIEN" EntitySet="NHANVIEN" />
+      <End Role="HOADON" EntitySet="HOADON" />
+    </AssociationSet>
+  </EntityContainer>
+  <Association Name="FK_HOADON_NHANVIEN_THANHTOAN">
+    <End Type="CafeGocNho_63134417Model.NHANVIEN" Role="NHANVIEN" Multiplicity="0..1" />
+    <End Type="CafeGocNho_63134417Model.HOADON" Role="HOADON" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NHANVIEN">
+        <PropertyRef Name="MANV" />
+      </Principal>
+      <Dependent Role="HOADON">
+        <PropertyRef Name="NV_THANHTOAN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

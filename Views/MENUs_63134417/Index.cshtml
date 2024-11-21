@@ -1,0 +1,76 @@
+﻿@model IEnumerable<CafeGocNho_63134417.Models.MENU>
+
+@{
+    ViewBag.Title = "Menu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var grid = new WebGrid(Model, canPage: false);
+}
+
+<style>
+    .footer-style a {
+        background-color: black;
+        color: white;
+        opacity: 70%;
+        padding: 2px 8px;
+        border-radius: 50px;
+    }
+
+        .footer-style a:hover {
+            text-decoration: underline;
+        }
+</style>
+<div class="flex justify-between pb-2">
+    <form id="searchForm" method="get" class="flex items-center">
+        <input type="hidden" name="tableId" value="@ViewBag.TableId" />
+        <input type="text" name="search" placeholder="Tìm kiếm món ăn..." value="@ViewBag.Search" class="w-80 border px-2 py-1 rounded-md focus:ring-2 focus:ring-yellow-500">
+        <button type="submit" class="ml-2 px-4 py-1 bg-yellow-400 active:bg-yellow-500 text-black rounded-md">Tìm kiếm</button>
+    </form>
+    <i title="Làm mới" class="fa-solid fa-rotate text-xl ml-2 p-2 hover:text-yellow-500 cursor-pointer sm:motion-safe:hover:animate-spin" onclick="location.href='@Url.Action("Index", "MENUs_63134417", new {tableId = ViewBag.TableId})'"></i>
+    <form id="filterForm" method="get" class="flex items-center ml-2">
+        <input type="hidden" name="tableId" value="@ViewBag.TableId" />
+        <select id="filterSelect" name="filter" class="w-80 border border-1 rounded shadow py-1" onchange="document.getElementById('filterForm').submit();">
+            <option value="all" @(ViewBag.Filter == "all" ? "selected" : "")>Tất cả</option>
+            <option value="AVS" @(ViewBag.Filter == "AVS" ? "selected" : "")>Ăn vặt & snack</option>
+            <option value="BEO" @(ViewBag.Filter == "BEO" ? "selected" : "")>Béo</option>
+            <option value="DANG" @(ViewBag.Filter == "DANG" ? "selected" : "")>Đắng</option>
+            <option value="DTS" @(ViewBag.Filter == "DTS" ? "selected" : "")>Điểm Tâm Sáng</option>
+            <option value="ICB" @(ViewBag.Filter == "ICB" ? "selected" : "")>Ice Blended</option>
+            <option value="SODA" @(ViewBag.Filter == "SODA" ? "selected" : "")>Soda</option>
+            <option value="THANH" @(ViewBag.Filter == "THANH" ? "selected" : "")>Thanh</option>
+            <option value="TUOI" @(ViewBag.Filter == "TUOI" ? "selected" : "")>Tươi</option>
+            <option value="YOGURT" @(ViewBag.Filter == "YOGURT" ? "selected" : "")>Yogurt</option>
+        </select>
+    </form>
+</div>
+<div class="h-[569px] overflow-scroll overflow-x-hidden overflow-y-visible shadow-lg">
+    @ViewBag.TB
+    @grid.GetHtml(
+        tableStyle: "table-style w-[890px] text-left rounded-lg",
+        headerStyle: "bg-yellow-300 opacity-70",
+        footerStyle: "font-bold text-center footer-style",
+        fillEmptyRows: true,
+        mode: WebGridPagerModes.All,
+        firstText: "<< First",
+        previousText: "< Prev",
+        nextText: "Next >",
+        lastText: "Last >>",
+        alternatingRowStyle: "bg-gray-200",
+          columns: new[]  // colums in grid
+          {
+                grid.Column("TENMH","Tên mặt hàng", style:"w-[160px]"),
+                grid.Column("DVT","Đơn vị tính", style:"w-[80px]"),
+                grid.Column("GIACA","Giá (VNĐ)", style:"w-[80px]", format: @<text>@(item.GIACA) VNĐ</text>),
+grid.Column("ANH", "Ảnh", style:"w-[130px]", format: @<text>
+                    <div class="h-[150px] w-[150px]">
+                        <img src="@(string.IsNullOrEmpty(item.ANH) ? Url.Content("~/Images/plate-utensils.png") : Url.Content("~/Images/imgMenu/" + item.ANH))"
+                             alt="Image" class="h-[150px] p-1 shadow border" />
+                    </div>
+</text>),
+grid.Column("","", style:"w-[90px]", format:@<text>
+    <button type="submit" name="productId">
+        <i class="fa-solid fa-circle-plus text-2xl hover:text-yellow-500"></i>
+    </button>
+</text>)
+}
+)
+</div>

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<CafeGocNho_63134417.Models.BAN>
+
+@{
+    ViewBag.Title = "Bàn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var selectedTable = Request.QueryString["tableId"];
+}
+    <!-- Cột Danh Sách Bàn -->
+    <div class="flex flex-col w-full h-[536px]">
+                <form id="filterForm" method="get">
+                    <label>
+                        <input type="radio" name="filter" value="all" onchange="document.getElementById('filterForm').submit();" @(ViewBag.Filter == "all" ? "checked" : "")>
+                        Tất cả
+                    </label>
+                    <label>
+                        <input type="radio" name="filter" value="available" onchange="document.getElementById('filterForm').submit();" @(ViewBag.Filter == "available" ? "checked" : "")>
+                        Bàn trống
+                    </label>
+                    <label>
+                        <input type="radio" name="filter" value="occupied" onchange="document.getElementById('filterForm').submit();" @(ViewBag.Filter == "occupied" ? "checked" : "")>
+                        Đang sử dụng
+                    </label>
+                </form>
+
+        <div class="h-full">
+            <ul id="tableList" class="grid grid-cols-6">
+
+                @foreach (var item in Model)
+                {
+                    <li class="rounded-lg shadow-lg p-4 h-28 m-2 @(item.TINHTRANG == 1 ? "bg-yellow-400 opacity-90" : "white")">
+                        <a href="@Url.Action("Index", "HOADONs_63134417", new { tableId = item.MABAN })"
+                           class=" cursor-pointer">
+                            <div class="bg-gray-200 text-gray-800 text-sm font-semibold px-2 py-1 rounded">
+                                Bàn: @item.MABAN
+                            </div>
+                        </a>
+                    </li>
+                }
+                @ViewBag.NoTable
+            </ul>
+        </div>
+    </div>
+    <div class="mt-4 flex justify-center text-black">
+        <!-- Luôn hiển thị phím điều hướng Previous -->
+        <a href="?page=@(ViewBag.CurrentPage > 1 ? ViewBag.CurrentPage - 1 : 1)" class="px-2 border rounded @(ViewBag.CurrentPage > 1 ? "" : "disabled-link")">Previous</a>
+
+        @if (ViewBag.TotalPages > 0)
+        {
+            for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <a href="?page=@i" class="px-2 border rounded @(i == ViewBag.CurrentPage ? "font-bold" : "")">@i</a>
+            }
+        }
+        else
+        {
+            <p>Không có bàn nào để hiển thị.</p>
+        }
+        <!-- Luôn hiển thị phím điều hướng Next -->
+        <a href="?page=@(ViewBag.CurrentPage < ViewBag.TotalPages ? ViewBag.CurrentPage + 1 : ViewBag.TotalPages)" class="px-2 border rounded @(ViewBag.CurrentPage < ViewBag.TotalPages ? "" : "disabled-link")">Next</a>
+    </div>

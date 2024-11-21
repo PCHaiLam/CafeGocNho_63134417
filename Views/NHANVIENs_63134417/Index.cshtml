@@ -1,0 +1,82 @@
+﻿@model IEnumerable<CafeGocNho_63134417.Models.NHANVIEN>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.HONV)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TENNV)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EMAIL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DIACHI)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MATKHAU)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CHUCVU)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GIOITINH)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SDT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CCCD)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.HONV)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TENNV)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EMAIL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DIACHI)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MATKHAU)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CHUCVU)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GIOITINH)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SDT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CCCD)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.MANV }) |
+            @Html.ActionLink("Details", "Details", new { id=item.MANV }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.MANV })
+        </td>
+    </tr>
+}
+
+</table>
