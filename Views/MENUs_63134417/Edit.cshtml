@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Edit";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutThongKe_63134417.cshtml";
 }
 
 <h2>Edit</h2>
@@ -19,7 +19,7 @@
         @Html.HiddenFor(model => model.MAMH)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.TENMH, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.TENMH, htmlAttributes: new { @class = "font-bold w-32 text-left" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.TENMH, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.TENMH, "", new { @class = "text-danger" })
@@ -27,7 +27,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.GIACA, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.GIACA, htmlAttributes: new { @class = "font-bold w-32 text-left" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.GIACA, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.GIACA, "", new { @class = "text-danger" })
@@ -35,7 +35,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.DVT, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.DVT, htmlAttributes: new { @class = "font-bold w-32 text-left" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.DVT, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.DVT, "", new { @class = "text-danger" })
@@ -43,7 +43,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.MALOAI, "MALOAI", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.MALOAI, "MALOAI", htmlAttributes: new { @class = "font-bold w-32 text-left" })
             <div class="col-md-10">
                 @Html.DropDownList("MALOAI", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.MALOAI, "", new { @class = "text-danger" })

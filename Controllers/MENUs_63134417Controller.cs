@@ -12,16 +12,12 @@ namespace CafeGocNho_63134417.Controllers
 {
     public class MENUs_63134417Controller : Controller
     {
-        private CafeGocNho_63134417Entities db = new CafeGocNho_63134417Entities();
+        private readonly CafeGocNho_63134417Entities db = new CafeGocNho_63134417Entities();
+        private readonly Helper.LayId layId = new Helper.LayId();
 
         // GET: MENUs_63134417
-        public ActionResult Index(string search = "", string filter = "all", string tableId = null)
+        public ActionResult Index(string search = "", string filter = "all")
         {
-            if (string.IsNullOrEmpty(tableId))
-            {
-                ViewBag.ShowAlert = true;
-            }
-
             IQueryable<MENU> menuQuery = db.MENU.Include(m => m.LOAIMATHANG);
 
             if (filter != "all")
@@ -36,16 +32,8 @@ namespace CafeGocNho_63134417.Controllers
 
             ViewBag.Filter = filter;
             ViewBag.Search = search;
-            ViewBag.TableId = tableId;
 
             return View(menuQuery.ToList());
-        }
-
-        //ThongKeMenu_63134417
-        public ActionResult ThongKeMenu_63134417()
-        {
-            return View()
-;
         }
 
         // GET: MENUs_63134417/Details/5
@@ -64,9 +52,11 @@ namespace CafeGocNho_63134417.Controllers
         }
 
         // GET: MENUs_63134417/Create
-        public ActionResult Create()
+        public ActionResult Create(string MALOAI)
         {
-            ViewBag.MALOAI = new SelectList(db.LOAIMATHANG, "MALOAI", "TENLOAI");
+            ViewBag.MAMH = layId.LayMa("MENU", MALOAI);
+            ViewBag.MALOAI = new SelectList(db.LOAIMATHANG, "MALOAI", "TENLOAI", MALOAI);
+            ViewBag.SelectedMALOAI = MALOAI; 
             return View();
         }
 
@@ -75,16 +65,24 @@ namespace CafeGocNho_63134417.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "MAMH,TENMH,GIACA,DVT,MALOAI")] MENU mENU)
+        public ActionResult Create([Bind(Include = "MAMH,TENMH,GIACA,DVT,ANH,SOLUONGHANG,MALOAI")] MENU mENU)
         {
+            var img = Request.Files["Avatar"];
+            string postedFileName = System.IO.Path.GetFileName(img.FileName);
+            string savePath = Server.MapPath("~/Images/" + postedFileName);
+            img.SaveAs(savePath);
+
+            ViewBag.MALOAI = new SelectList(db.LOAIMATHANG, "MALOAI", "TENLOAI", mENU.MALOAI);
+
             if (ModelState.IsValid)
             {
+                mENU.MAMH = layId.LayMa("MENU");
+                mENU.ANH = postedFileName;
                 db.MENU.Add(mENU);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.MALOAI = new SelectList(db.LOAIMATHANG, "MALOAI", "TENLOAI", mENU.MALOAI);
             return View(mENU);
         }
 

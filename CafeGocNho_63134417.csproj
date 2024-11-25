@@ -269,7 +269,6 @@
     <Content Include="Views\HOADONs_63134417\ThongKeHoaDon_63134417.cshtml" />
     <Content Include="Views\Shared\_LayoutThongKe_63134417.cshtml" />
     <Content Include="Views\HOADONs_63134417\TongQuanHoaDon_63134417.cshtml" />
-    <Content Include="Views\MENUs_63134417\ThongKeMenu_63134417.cshtml" />
     <Content Include="Views\BANs_63134417\ThongKeBan_63134417.cshtml" />
     <Content Include="Views\NHANVIENs_63134417\ThongKeNhanVien_63134417.cshtml" />
     <Content Include="Views\CHITIETHOADONs_63134417\ChiTiet_63134417.cshtml" />
