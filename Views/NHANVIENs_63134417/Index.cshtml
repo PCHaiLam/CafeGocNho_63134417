@@ -3,6 +3,12 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    //kiểm tra phân quyền
+    if (Session["Role"] == null || Session["Role"].ToString() == "Unknown")
+    {
+        Response.Redirect("~/PhanQuyen_63134417/DangNhap");
+    }
 }
 
 <h2>Index</h2>

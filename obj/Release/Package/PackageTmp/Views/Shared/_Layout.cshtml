@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goc Nho Coffee</title>
+    <link rel="icon" type="image/x-icon" href="/Images/logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="bg-gray-100 flex flex-col">
+    <nav class="bg-black bg-opacity-70 text-white h-20">
+        <div class="container mx-auto flex items-center justify-between h-full">
+
+            <div class="flex items-center space-x-8 font-bold">
+                @Html.ActionLink("Bàn", "Index", "BANs_63134417", new { tableId = ViewBag.TableId }, new { @class = "hover:text-yellow-500" })
+            </div>
+
+
+            <div class="absolute left-1/2 transform -translate-x-1/2">
+                <a href="#">
+                    <img src="~/Images/logo.png" alt="Logo" class="h-16 rounded-full">
+                </a>
+            </div>
+
+            <div class="flex space-x-4 items-center">
+                @if (Session["Role"] != null && Session["Role"].ToString() != "Unknown")
+                {
+                    <span>Nhân Viên: @Session["Ten"]</span>
+
+                    <div class="relative">
+                        <button onclick="toggleDropdown()" class="hover:text-yellow-500 focus:outline-none">
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div id="dropdownMenu" class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-md hidden">
+                            @if (Session["Role"].ToString() == "Quản lý")
+                            {
+                                 <a href="@Url.Action("TongQuanHoaDon_63134417", "HOADONs_63134417")" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                                    Quản lý
+                                </a>
+                            }
+                            <a href="@Url.Action("DangNhap", "PhanQuyen_63134417")" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                                Đăng xuất
+                            </a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <a href="@Url.Action("DangNhap", "PhanQuyen_63134417")" class="hover:text-yellow-500 mt-1">Đăng nhập</a>
+                }
+            </div>
+        </div>
+        <hr class="border-t border-gray-700">
+    </nav>
+
+    <div class="mx-32 gap-4 py-2">
+        @RenderBody()
+    </div>
+
+    <footer class="fixed bottom-0 w-full bg-black bg-opacity-70 text-white flex justify-around h-6">
+        <div>
+            &copy; @DateTime.Now.Year - Goc Nho Coffee
+            <a href="https://github.com/PCHaiLam/CafeGocNho_63134417" target="_blank" class="hover:text-yellow-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0C5.38 0 0 5.38 0 12c0 5.32 3.49 9.8 8.18 11.27.6.1.82-.27.82-.6v-2.2c-3.34.73-4.03-1.4-4.03-1.4-.55-1.4-1.35-1.77-1.35-1.77-1.1-.82.08-.82.08-.82 1.2.08 1.82 1.23 1.82 1.23 1.07 1.8 2.8 1.23 3.5.96.1-.82.43-1.4.82-1.73-2.7-.27-5.57-1.35-5.57-6.03 0-1.4.48-2.5 1.27-3.41-.2-.3-.55-1.4.1-2.9 0 0 1.08-.34 3.57 1.27.97-.27 2.03-.4 3.1-.4 1.07 0 2.1.13 3.1.4 2.47-1.67 3.56-1.27 3.56-1.27.66 1.5.3 2.6.1 2.9.8.9 1.27 2 1.27 3.41 0 4.67-2.87 5.76-5.6 6.03.43.35.83 1 .83 2.03v3c0 .34.2.7.82.6C20.51 21.8 24 17.32 24 12 24 5.38 18.62 0 12 0z" />
+                </svg>
+            </a>
+        </div>
+    </footer>
+</body>
+</html>
+<script>
+    var datetime;
+
+    function updateDateTime() {
+        datetime = new Date();
+
+        var hours = datetime.getHours();
+        var minutes = datetime.getMinutes();
+        var day = datetime.getDate();
+        var month = datetime.getMonth() + 1; 
+        var year = datetime.getFullYear();
+
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+        var formattedDateTime = day + "/" + month + "/" + year + " " + hours + ":" + minutes;
+
+        document.getElementById("dateTimeDisplay").innerText = formattedDateTime;
+    }
+    updateDateTime();
+    setInterval(updateDateTime, 60000);
+    function toggleDropdown() {
+        const dropdown = document.getElementById("dropdownMenu");
+        dropdown.classList.toggle("hidden");
+    }
+
+    document.addEventListener("click", function (event) {
+        const dropdown = document.getElementById("dropdownMenu");
+        const button = event.target.closest("button");
+
+        if (!dropdown.contains(event.target) && !button) {
+            dropdown.classList.add("hidden");
+        }
+    });
+</script>

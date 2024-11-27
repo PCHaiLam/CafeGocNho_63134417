@@ -4,6 +4,12 @@
     ViewBag.Title = "Menu";
     Layout = "~/Views/Shared/_LayoutThongKe_63134417.cshtml";
     var grid = new WebGrid(Model, canPage: false);
+
+    //kiểm tra phân quyền
+    if (Session["Role"] == null || Session["Role"].ToString() == "Unknown")
+    {
+        Response.Redirect("~/PhanQuyen_63134417/DangNhap");
+    }
 }
 
 <style>

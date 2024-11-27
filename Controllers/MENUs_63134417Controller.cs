@@ -65,18 +65,19 @@ namespace CafeGocNho_63134417.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "MAMH,TENMH,GIACA,DVT,ANH,SOLUONGHANG,MALOAI")] MENU mENU)
+        public ActionResult Create([Bind(Include = "MAMH,TENMH,GIACA,DVT,ANH,SOLUONGHANG,MALOAI")] MENU mENU, string MALOAI)
         {
             var img = Request.Files["Avatar"];
             string postedFileName = System.IO.Path.GetFileName(img.FileName);
-            string savePath = Server.MapPath("~/Images/" + postedFileName);
+            var savePath = Server.MapPath("/Images/imgMenu/" + postedFileName);
             img.SaveAs(savePath);
+            
+            mENU.MAMH = layId.LayMa("MENU", MALOAI);
 
             ViewBag.MALOAI = new SelectList(db.LOAIMATHANG, "MALOAI", "TENLOAI", mENU.MALOAI);
 
             if (ModelState.IsValid)
             {
-                mENU.MAMH = layId.LayMa("MENU");
                 mENU.ANH = postedFileName;
                 db.MENU.Add(mENU);
                 db.SaveChanges();
@@ -107,7 +108,7 @@ namespace CafeGocNho_63134417.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "MAMH,TENMH,GIACA,DVT,MALOAI")] MENU mENU)
+        public ActionResult Edit([Bind(Include = "TENMH,GIACA,DVT,ANH,SOLUONGHANG")] MENU mENU)
         {
             if (ModelState.IsValid)
             {

@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\Admin\\Documents\\GitHub\\CafeGocNho_63134417\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{62349A2C-3CC5-4343-B399-4F142E15CF17}|CafeGocNho_63134417.csproj|c:\\users\\admin\\documents\\github\\cafegocnho_63134417\\views\\menus_63134417\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{62349A2C-3CC5-4343-B399-4F142E15CF17}|CafeGocNho_63134417.csproj|solutionrelative:views\\menus_63134417\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{62349A2C-3CC5-4343-B399-4F142E15CF17}|CafeGocNho_63134417.csproj|c:\\users\\admin\\documents\\github\\cafegocnho_63134417\\views\\nhanviens_63134417\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{62349A2C-3CC5-4343-B399-4F142E15CF17}|CafeGocNho_63134417.csproj|solutionrelative:views\\nhanviens_63134417\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{62349A2C-3CC5-4343-B399-4F142E15CF17}|CafeGocNho_63134417.csproj|c:\\users\\admin\\documents\\github\\cafegocnho_63134417\\views\\menus_63134417\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{62349A2C-3CC5-4343-B399-4F142E15CF17}|CafeGocNho_63134417.csproj|solutionrelative:views\\menus_63134417\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{62349A2C-3CC5-4343-B399-4F142E15CF17}|CafeGocNho_63134417.csproj|c:\\users\\admin\\documents\\github\\cafegocnho_63134417\\controllers\\hoadons_63134417controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{62349A2C-3CC5-4343-B399-4F142E15CF17}|CafeGocNho_63134417.csproj|solutionrelative:controllers\\hoadons_63134417controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{62349A2C-3CC5-4343-B399-4F142E15CF17}|CafeGocNho_63134417.csproj|c:\\users\\admin\\documents\\github\\cafegocnho_63134417\\controllers\\menus_63134417controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{62349A2C-3CC5-4343-B399-4F142E15CF17}|CafeGocNho_63134417.csproj|solutionrelative:controllers\\menus_63134417controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{62349A2C-3CC5-4343-B399-4F142E15CF17}|CafeGocNho_63134417.csproj|c:\\users\\admin\\documents\\github\\cafegocnho_63134417\\controllers\\phanquyen_63134417controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{62349A2C-3CC5-4343-B399-4F142E15CF17}|CafeGocNho_63134417.csproj|solutionrelative:controllers\\phanquyen_63134417controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{62349A2C-3CC5-4343-B399-4F142E15CF17}|CafeGocNho_63134417.csproj|c:\\users\\admin\\documents\\github\\cafegocnho_63134417\\views\\shared\\_layoutthongke_63134417.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{62349A2C-3CC5-4343-B399-4F142E15CF17}|CafeGocNho_63134417.csproj|solutionrelative:views\\shared\\_layoutthongke_63134417.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{62349A2C-3CC5-4343-B399-4F142E15CF17}|CafeGocNho_63134417.csproj|c:\\users\\admin\\documents\\github\\cafegocnho_63134417\\views\\hoadons_63134417\\thongkehoadon_63134417.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{62349A2C-3CC5-4343-B399-4F142E15CF17}|CafeGocNho_63134417.csproj|solutionrelative:views\\hoadons_63134417\\thongkehoadon_63134417.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,8 +30,60 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\CafeGocNho_63134417\\Views\\NHANVIENs_63134417\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\NHANVIENs_63134417\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\CafeGocNho_63134417\\Views\\NHANVIENs_63134417\\Index.cshtml",
+              "RelativeToolTip": "Views\\NHANVIENs_63134417\\Index.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-27T17:49:54.031Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "_LayoutThongKe_63134417.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\CafeGocNho_63134417\\Views\\Shared\\_LayoutThongKe_63134417.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_LayoutThongKe_63134417.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\CafeGocNho_63134417\\Views\\Shared\\_LayoutThongKe_63134417.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_LayoutThongKe_63134417.cshtml",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAAAC8AAABIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-27T17:42:43.497Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PhanQuyen_63134417Controller.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\CafeGocNho_63134417\\Controllers\\PhanQuyen_63134417Controller.cs",
+              "RelativeDocumentMoniker": "Controllers\\PhanQuyen_63134417Controller.cs",
+              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\CafeGocNho_63134417\\Controllers\\PhanQuyen_63134417Controller.cs",
+              "RelativeToolTip": "Controllers\\PhanQuyen_63134417Controller.cs",
+              "ViewState": "AQIAADkAAAAAAAAAAAA1wDUAAAAnAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T17:42:11.621Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "HOADONs_63134417Controller.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\CafeGocNho_63134417\\Controllers\\HOADONs_63134417Controller.cs",
+              "RelativeDocumentMoniker": "Controllers\\HOADONs_63134417Controller.cs",
+              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\CafeGocNho_63134417\\Controllers\\HOADONs_63134417Controller.cs",
+              "RelativeToolTip": "Controllers\\HOADONs_63134417Controller.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAFMAAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-27T17:32:49.727Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
@@ -58,41 +118,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Edit.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\CafeGocNho_63134417\\Views\\MENUs_63134417\\Edit.cshtml",
-              "RelativeDocumentMoniker": "Views\\MENUs_63134417\\Edit.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\CafeGocNho_63134417\\Views\\MENUs_63134417\\Edit.cshtml",
-              "RelativeToolTip": "Views\\MENUs_63134417\\Edit.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAA0AAAA",
+              "DocumentIndex": 4,
+              "Title": "ThongKeHoaDon_63134417.cshtml",
+              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\CafeGocNho_63134417\\Views\\HOADONs_63134417\\ThongKeHoaDon_63134417.cshtml",
+              "RelativeDocumentMoniker": "Views\\HOADONs_63134417\\ThongKeHoaDon_63134417.cshtml",
+              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\CafeGocNho_63134417\\Views\\HOADONs_63134417\\ThongKeHoaDon_63134417.cshtml",
+              "RelativeToolTip": "Views\\HOADONs_63134417\\ThongKeHoaDon_63134417.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAE4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-11-24T07:20:48.277Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\CafeGocNho_63134417\\Views\\MENUs_63134417\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\MENUs_63134417\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\CafeGocNho_63134417\\Views\\MENUs_63134417\\Index.cshtml",
-              "RelativeToolTip": "Views\\MENUs_63134417\\Index.cshtml",
-              "ViewState": "AQIAADAAAAAAAAAAAAAAAEoAAAB4AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-11-24T07:20:23.102Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "MENUs_63134417Controller.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\CafeGocNho_63134417\\Controllers\\MENUs_63134417Controller.cs",
-              "RelativeDocumentMoniker": "Controllers\\MENUs_63134417Controller.cs",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\CafeGocNho_63134417\\Controllers\\MENUs_63134417Controller.cs",
-              "RelativeToolTip": "Controllers\\MENUs_63134417Controller.cs",
-              "ViewState": "AQIAAB8AAAAAAAAAAAAQwDoAAAAtAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-21T12:22:58.434Z",
+              "WhenOpened": "2024-11-27T17:15:38.067Z",
               "EditorCaption": ""
             }
           ]

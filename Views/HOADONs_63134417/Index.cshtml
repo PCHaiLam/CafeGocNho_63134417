@@ -5,6 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     int totalQuantity = 0;
     int totalPrice = 0;
+
+    //kiểm tra phân quyền
+    if (Session["Role"] == null || Session["Role"].ToString() == "Unknown")
+    {
+        Response.Redirect("~/PhanQuyen_63134417/DangNhap");
+    }
 }
 
 <div class="h-full grid grid-cols-3">
@@ -82,6 +88,7 @@
         </div>
     </div>
     <div class="ml-4 w-full col-span-1 grid text-right">
+
         <p id="dateTimeDisplay" class="h-8"></p>
         <div class="grid grid-cols-2 mx-4">
             <div class="text-left" title="Người nhận đơn"> Người nhận đơn <i class="fa-solid fa-user p-2 rounded-2xl border-2 "></i></div> <p>@Model.FirstOrDefault().NHANVIEN.TENNV</p>
@@ -94,6 +101,7 @@
             </div>
             <p class="text-left">Tổng hóa đơn</p><p id="totalPriceDisplay">@totalPrice.ToString("N0")</p>
         </div>
+
         <div class="h-16 flex justify-between font-bold text-white items-center">
             @if (Session["Role"].ToString() == "Nhân viên")
             {
@@ -112,6 +120,7 @@
                     <input type="hidden" name="maBan" value="@ViewBag.TableId" />
                     <input type="hidden" name="maHD" value="@ViewBag.BillId" />
                     <input type="hidden" id="discountValue" name="discount" />
+                    <input type="hidden" name="maNV" value="@Session["MaNV"]"/>
                     <button type="submit" class="w-[140px] p-3 border rounded-3xl bg-green-400 active:bg-green-500 hover:text-yellow-300"><i class="fa-solid fa-dollar-sign"></i> Thanh toán</button>
                 </form>
             }

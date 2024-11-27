@@ -20,6 +20,7 @@
           <Property Name="MAHD" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="MAMH" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="SOLUONG" Type="int" />
+          <Property Name="GIABAN" Type="int" />
         </EntityType>
         <EntityType Name="HOADON">
           <Key>
@@ -28,10 +29,12 @@
           <Property Name="MAHD" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="MABAN" Type="int" />
           <Property Name="MANV" Type="varchar" MaxLength="10" />
-          <Property Name="THOIGIAN" Type="datetime" />
+          <Property Name="THOIGIAN_NHANDON" Type="datetime" />
+          <Property Name="THOIGIAN_THANHTOAN" Type="date" />
           <Property Name="THANHTOAN" Type="smallint" />
           <Property Name="GIAMGIA" Type="int" />
           <Property Name="NV_THANHTOAN" Type="varchar" MaxLength="10" />
+          <Property Name="TRANGTHAI_XOA" Type="smallint" />
         </EntityType>
         <EntityType Name="LOAIMATHANG">
           <Key>
@@ -48,9 +51,10 @@
           <Property Name="TENMH" Type="nvarchar" MaxLength="200" />
           <Property Name="GIACA" Type="int" />
           <Property Name="DVT" Type="nvarchar" MaxLength="10" />
-          <Property Name="ANH" Type="varchar" MaxLength="50" />
+          <Property Name="ANH" Type="varchar" MaxLength="200" />
           <Property Name="SOLUONGHANG" Type="int" />
           <Property Name="MALOAI" Type="varchar" MaxLength="10" />
+          <Property Name="TRANGTHAI_XOA" Type="smallint" />
         </EntityType>
         <EntityType Name="NHANVIEN">
           <Key>
@@ -201,6 +205,7 @@
           <NavigationProperty Name="MENU" Relationship="Self.FK_CHITIETH_CHI_TIET__MENU" FromRole="CHITIETHOADON" ToRole="MENU" />
           <NavigationProperty Name="HOADON" Relationship="Self.FK_CHITIETH_PHIEU_XUA_HOADON" FromRole="CHITIETHOADON" ToRole="HOADON" />
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GIABAN" Type="Int32" />
         </EntityType>
         <EntityType Name="HOADON">
           <Key>
@@ -209,7 +214,6 @@
           <Property Name="MAHD" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="MABAN" Type="Int32" />
           <Property Name="MANV" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="THOIGIAN" Type="DateTime" Precision="3" />
           <NavigationProperty Name="BAN" Relationship="Self.FK_HOADON_BAN_PHIEU_BAN" FromRole="HOADON" ToRole="BAN" />
           <NavigationProperty Name="CHITIETHOADON" Relationship="Self.FK_CHITIETH_PHIEU_XUA_HOADON" FromRole="HOADON" ToRole="CHITIETHOADON" />
           <NavigationProperty Name="NHANVIEN" Relationship="Self.FK_HOADON_NHAN_VIEN_NHANVIEN" FromRole="HOADON" ToRole="NHANVIEN" />
@@ -217,6 +221,9 @@
           <Property Name="GIAMGIA" Type="Int32" />
           <Property Name="NV_THANHTOAN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="NHANVIEN1" Relationship="CafeGocNho_63134417Model.FK_HOADON_NHANVIEN_THANHTOAN" FromRole="HOADON" ToRole="NHANVIEN" />
+          <Property Name="TRANGTHAI_XOA" Type="Int16" />
+          <Property Name="THOIGIAN_NHANDON" Type="DateTime" Precision="3" />
+          <Property Name="THOIGIAN_THANHTOAN" Type="DateTime" />
         </EntityType>
         <EntityType Name="LOAIMATHANG">
           <Key>
@@ -237,8 +244,9 @@
           <Property Name="MALOAI" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CHITIETHOADON" Relationship="Self.FK_CHITIETH_CHI_TIET__MENU" FromRole="MENU" ToRole="CHITIETHOADON" />
           <NavigationProperty Name="LOAIMATHANG" Relationship="Self.FK_MENU_REFERENCE_LOAIMATH" FromRole="MENU" ToRole="LOAIMATHANG" />
-          <Property Name="ANH" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ANH" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="SOLUONGHANG" Type="Int32" />
+          <Property Name="TRANGTHAI_XOA" Type="Int16" />
         </EntityType>
         <EntityType Name="NHANVIEN">
           <Key>
@@ -393,6 +401,7 @@
           <EntitySetMapping Name="CHITIETHOADON">
             <EntityTypeMapping TypeName="CafeGocNho_63134417Model.CHITIETHOADON">
               <MappingFragment StoreEntitySet="CHITIETHOADON">
+                <ScalarProperty Name="GIABAN" ColumnName="GIABAN" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="MAHD" ColumnName="MAHD" />
                 <ScalarProperty Name="MAMH" ColumnName="MAMH" />
@@ -403,13 +412,15 @@
           <EntitySetMapping Name="HOADON">
             <EntityTypeMapping TypeName="CafeGocNho_63134417Model.HOADON">
               <MappingFragment StoreEntitySet="HOADON">
+                <ScalarProperty Name="THOIGIAN_THANHTOAN" ColumnName="THOIGIAN_THANHTOAN" />
+                <ScalarProperty Name="THOIGIAN_NHANDON" ColumnName="THOIGIAN_NHANDON" />
+                <ScalarProperty Name="TRANGTHAI_XOA" ColumnName="TRANGTHAI_XOA" />
                 <ScalarProperty Name="NV_THANHTOAN" ColumnName="NV_THANHTOAN" />
                 <ScalarProperty Name="GIAMGIA" ColumnName="GIAMGIA" />
                 <ScalarProperty Name="THANHTOAN" ColumnName="THANHTOAN" />
                 <ScalarProperty Name="MAHD" ColumnName="MAHD" />
                 <ScalarProperty Name="MABAN" ColumnName="MABAN" />
                 <ScalarProperty Name="MANV" ColumnName="MANV" />
-                <ScalarProperty Name="THOIGIAN" ColumnName="THOIGIAN" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -424,6 +435,7 @@
           <EntitySetMapping Name="MENU">
             <EntityTypeMapping TypeName="CafeGocNho_63134417Model.MENU">
               <MappingFragment StoreEntitySet="MENU">
+                <ScalarProperty Name="TRANGTHAI_XOA" ColumnName="TRANGTHAI_XOA" />
                 <ScalarProperty Name="SOLUONGHANG" ColumnName="SOLUONGHANG" />
                 <ScalarProperty Name="ANH" ColumnName="ANH" />
                 <ScalarProperty Name="MAMH" ColumnName="MAMH" />

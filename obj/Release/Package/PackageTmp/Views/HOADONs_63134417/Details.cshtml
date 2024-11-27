@@ -1,0 +1,51 @@
+﻿@model CafeGocNho_63134417.Models.HOADON
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>HOADON</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.THOIGIAN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.THOIGIAN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.THANHTOAN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.THANHTOAN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BAN.MABAN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BAN.MABAN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NHANVIEN.HONV)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NHANVIEN.HONV)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.MAHD }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

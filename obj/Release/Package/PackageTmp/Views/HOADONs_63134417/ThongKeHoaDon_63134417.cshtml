@@ -1,0 +1,83 @@
+﻿@model IEnumerable<CafeGocNho_63134417.Models.HOADON>
+
+@{
+    ViewBag.Title = "ThongKeHoaDon_63134417";
+    Layout = "~/Views/Shared/_LayoutThongKe_63134417.cshtml";
+    var grid = new WebGrid(Model, canPage: true, defaultSort: "MAHD", rowsPerPage: 10);
+}
+
+<div class="grid grid-cols-4 mt-4">
+    <div class="w-72 h-full">
+        <div class="bg-white text-black p-4 border-2 rounded-xl shadow">
+            <h1 class="font-bold text-3xl text-center uppercase">Tìm kiếm</h1>
+            <form method="post" action="@Url.Action("ThongKeHoaDon_63134417", "HOADONs_63134417")" class="mt-4">
+
+                <input type="text" name="search" placeholder="Tìm mã hóa đơn" class="w-full p-2 border rounded" />
+                <button type="submit" class="mt-4 w-full bg-blue-500 text-white py-2 rounded">Tìm</button>
+            </form>
+        </div>
+        <div class="mt-6 bg-white text-black p-4 border-2 rounded-xl shadow">
+            <h1 class="font-bold text-3xl text-center uppercase">Xem theo ngày</h1>
+            <form method="post" action="@Url.Action("ThongKeHoaDon_63134417", "HOADONs_63134417")" class="mt-4">
+                <label class="flex items-center">
+                    <input type="radio" name="dateOption" value="today" onclick="hideDateInput()" />
+                    <span class="ml-2">Hôm nay</span>
+                </label>
+                <label class="flex items-center mt-2">
+                    <input type="radio" name="dateOption" value="all" checked onclick="hideDateInput()" />
+                    <span class="ml-2">Tất cả</span>
+                </label>
+                <label class="flex items-center mt-2">
+                    <input type="radio" name="dateOption" value="custom" onclick="showDateInput()" />
+                    <span class="ml-2">Chọn ngày</span>
+                </label>
+                <input type="date" name="date" id="customDate" class="mt-4 w-full p-2 border rounded hidden" />
+
+                <button type="submit" class="mt-4 w-full bg-blue-500 text-white py-2 rounded">Xem thống kê</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-span-3 flex flex-col justify-between w-full min-h-[550px] bg-white border-2 rounded-xl p-4">
+        <div class="border-2 h-full text-left">
+            @grid.GetHtml(
+         tableStyle: "h-full w-full text-left rounded-lg",
+         headerStyle: "bg-yellow-300 opacity-70",
+         footerStyle: "font-bold text-center footer-style",
+         fillEmptyRows: true,
+         mode: WebGridPagerModes.All,
+         firstText: "<< First",
+         previousText: "< Prev",
+         nextText: "Next >",
+         lastText: "Last >>",
+         alternatingRowStyle: "bg-gray-200",
+           columns: new[]  // colums in grid
+           {
+                        grid.Column("MAHD","Mã hóa đơn", style:"w-[120px]"),
+                        grid.Column("THOIGIAN","Thời gian", style:"w-[150px]", format: @<text>@item.THOIGIAN.ToString("dd/MM/yyyy hh:mm")</text>),
+                        grid.Column("NHANVIEN.TENNV","Người nhận", style:"w-[130px]"),
+                        grid.Column("GIAMGIA","Giảm giá(%)", style:"w-[100px]"),
+                        grid.Column("THANHTOAN", "Trạng thái", style: "w-[130px]",
+                                format: @<text>
+                                            @Html.Raw(item.THANHTOAN == 1 ? "<span class='text-green-500 font-bold'>Đã thanh toán</span>" : "<span class='text-red-500 font-bold'>Chưa thanh toán</span>")
+                                        </text>),
+                        grid.Column("", style:"w-[100px]", format: @<text> <a href="@Url.Action("ChiTiet_63134417","CHITIETHOADONs_63134417",new { id = item.MAHD})" >Chi tiết</a> </text>),
+           }
+)
+        </div>
+    </div>
+</div>
+
+<script>
+    function hideDateInput() {
+        const dateInput = document.getElementById("customDate");
+        dateInput.classList.remove("block");
+        dateInput.classList.add("hidden");
+    }
+
+    function showDateInput() {
+        const dateInput = document.getElementById("customDate");
+        dateInput.classList.remove("hidden");
+        dateInput.classList.add("block");
+    }
+</script>
+

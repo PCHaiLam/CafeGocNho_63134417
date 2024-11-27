@@ -27,6 +27,7 @@ namespace CafeGocNho_63134417.Models
         public string MALOAI { get; set; }
         public string ANH { get; set; }
         public Nullable<int> SOLUONGHANG { get; set; }
+        public Nullable<short> TRANGTHAI_XOA { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CHITIETHOADON> CHITIETHOADON { get; set; }

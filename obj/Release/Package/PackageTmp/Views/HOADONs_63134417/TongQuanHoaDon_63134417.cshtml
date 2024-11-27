@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "TongQuanHoaDon_63134417";
+    Layout = "~/Views/Shared/_LayoutThongKe_63134417.cshtml";
+}
+
+<div class="grid grid-cols-4 mt-4">
+    <div class="w-72 h-max bg-white text-black p-4 border-2 rounded-xl shadow">
+        <h1 class="font-bold text-3xl text-center uppercase">tổng quan hôm nay</h1>
+    </div>
+
+    <div class="col-span-3 w-full grid grid-cols-3 gap-4">
+        <div class="w-full h-max flex items-center justify-around bg-white p-6 rounded-xl shadow text-left">
+            <i class="fa-solid fa-dollar-sign text-3xl px-4 py-1 rounded-full shadow border-xl bg-yellow-400"></i>
+            <div>
+                <h2 class="text-2xl font-bold">@ViewBag.doanhThu</h2>
+                <p class="text-gray-500">Tổng doanh thu</p>
+            </div>
+        </div>
+        <div class="w-full h-max flex items-center justify-around bg-white p-6 rounded-xl shadow text-left">
+            <i class="fa-solid fa-cart-shopping  text-3xl px-3 py-2 rounded-full shadow border-xl bg-yellow-400"></i>
+            <div>
+                <h2 class="text-2xl font-bold">@ViewBag.hangDaBan</h2>
+                <p class="text-gray-500">Đã bán</p>
+            </div>
+        </div>
+        <div class="w-full h-max flex items-center justify-around bg-white p-6 rounded-xl shadow text-left">
+            <i class="fa-brands fa-product-hunt  text-3xl px-3 py-2 rounded-full shadow border-xl bg-yellow-400"></i>
+            <div>
+                <h2 class="text-2xl font-bold">@ViewBag.hangTon</h2>
+                <p class="text-gray-500">Hàng tồn</p>
+            </div>
+        </div>
+        @* hàng đã bán hôm nay *@
+        <div class="col-span-3 flex flex-col justify-between w-full min-h-[450px] bg-white border-2 rounded-xl p-4">
+            @if (ViewBag.chiTietSanPhamDaBan != null)
+            {
+                <div class=" h-[368px] text-left overflow-scroll overflow-x-hidden">
+                    <table class="w-full border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="border p-2">Tên sản phẩm</th>
+                                <th class="border p-2">Số lượng</th>
+                                <th class="border p-2">Giá</th>
+                                <th class="border p-2 w-[235px]">Tổng tiền hàng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.chiTietSanPhamDaBan)
+                            {
+                                <tr>
+                                    <td class="border p-2">@item.MENU.TENMH</td>
+                                    <td class="border p-2">@item.SOLUONG</td>
+                                    <td class="border p-2">@item.MENU.GIACA</td>
+                                    <td class="border p-2">@((item.SOLUONG * item.MENU.GIACA).ToString("N0")) VNĐ</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="w-full text-left flex justify-end">
+                    <h2 class="font-bold text-2xl uppercase pr-4">Tổng tiền hàng: </h2>
+                    <h2 class="font-bold text-2xl uppercase w-[240px]">@ViewBag.tongTienhang vnđ</h2>
+                </div>
+            }
+            else
+            {
+                <h1 class="text-center font-bold uppercase text-3xl my-auto">Không có sản phẩm nào đã bán trong ngày hôm nay.</h1>
+            }
+        </div>
+    </div>
+</div>

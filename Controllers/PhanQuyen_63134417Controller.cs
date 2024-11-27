@@ -87,6 +87,15 @@ namespace CafeGocNho_63134417.Controllers
             }
             return View(qt);
         }
-
+        //hàm đăng xuất, xóa session
+        public ActionResult DangXuat()
+        {
+            Session["Email"] = null;
+            Session["Ten"] = null;
+            Session["MaNV"] = null;
+            Session["Role"] = null;
+            FormsAuthentication.SignOut();
+            return RedirectToAction("DangNhap", "PhanQuyen_63134417");
+        }
     }
 }

@@ -1,0 +1,51 @@
+﻿@model CafeGocNho_63134417.Models.MENU
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>MENU</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TENMH)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TENMH)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GIACA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GIACA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DVT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DVT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LOAIMATHANG.TENLOAI)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LOAIMATHANG.TENLOAI)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.MAMH }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

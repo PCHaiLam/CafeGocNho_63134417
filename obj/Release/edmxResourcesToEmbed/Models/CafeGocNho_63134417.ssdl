@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CafeGocNho_63134417Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="BAN">
+    <Key>
+      <PropertyRef Name="MABAN" />
+    </Key>
+    <Property Name="MABAN" Type="int" Nullable="false" />
+    <Property Name="TINHTRANG" Type="smallint" />
+  </EntityType>
+  <EntityType Name="CHITIETHOADON">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MAHD" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="MAMH" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="SOLUONG" Type="int" />
+    <Property Name="GIABAN" Type="int" />
+  </EntityType>
+  <EntityType Name="HOADON">
+    <Key>
+      <PropertyRef Name="MAHD" />
+    </Key>
+    <Property Name="MAHD" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="MABAN" Type="int" />
+    <Property Name="MANV" Type="varchar" MaxLength="10" />
+    <Property Name="THOIGIAN" Type="datetime" />
+    <Property Name="THANHTOAN" Type="smallint" />
+    <Property Name="GIAMGIA" Type="int" />
+    <Property Name="NV_THANHTOAN" Type="varchar" MaxLength="10" />
+    <Property Name="TRANGTHAI_XOA" Type="smallint" />
+  </EntityType>
+  <EntityType Name="LOAIMATHANG">
+    <Key>
+      <PropertyRef Name="MALOAI" />
+    </Key>
+    <Property Name="MALOAI" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="TENLOAI" Type="nvarchar" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="MENU">
+    <Key>
+      <PropertyRef Name="MAMH" />
+    </Key>
+    <Property Name="MAMH" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="TENMH" Type="nvarchar" MaxLength="200" />
+    <Property Name="GIACA" Type="int" />
+    <Property Name="DVT" Type="nvarchar" MaxLength="10" />
+    <Property Name="ANH" Type="varchar" MaxLength="200" />
+    <Property Name="SOLUONGHANG" Type="int" />
+    <Property Name="MALOAI" Type="varchar" MaxLength="10" />
+    <Property Name="TRANGTHAI_XOA" Type="smallint" />
+  </EntityType>
+  <EntityType Name="NHANVIEN">
+    <Key>
+      <PropertyRef Name="MANV" />
+    </Key>
+    <Property Name="MANV" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="HONV" Type="nvarchar" MaxLength="50" />
+    <Property Name="TENNV" Type="nvarchar" MaxLength="10" />
+    <Property Name="EMAIL" Type="varchar" MaxLength="50" />
+    <Property Name="DIACHI" Type="nvarchar" MaxLength="200" />
+    <Property Name="MATKHAU" Type="varchar" MaxLength="50" />
+    <Property Name="CHUCVU" Type="smallint" />
+    <Property Name="GIOITINH" Type="smallint" />
+    <Property Name="SDT" Type="varchar" MaxLength="15" />
+    <Property Name="CCCD" Type="varchar" MaxLength="12" />
+  </EntityType>
+  <Association Name="FK_CHITIETH_CHI_TIET__MENU">
+    <End Role="MENU" Type="Self.MENU" Multiplicity="1" />
+    <End Role="CHITIETHOADON" Type="Self.CHITIETHOADON" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MENU">
+        <PropertyRef Name="MAMH" />
+      </Principal>
+      <Dependent Role="CHITIETHOADON">
+        <PropertyRef Name="MAMH" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CHITIETH_PHIEU_XUA_HOADON">
+    <End Role="HOADON" Type="Self.HOADON" Multiplicity="1" />
+    <End Role="CHITIETHOADON" Type="Self.CHITIETHOADON" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HOADON">
+        <PropertyRef Name="MAHD" />
+      </Principal>
+      <Dependent Role="CHITIETHOADON">
+        <PropertyRef Name="MAHD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_HOADON_BAN_PHIEU_BAN">
+    <End Role="BAN" Type="Self.BAN" Multiplicity="0..1" />
+    <End Role="HOADON" Type="Self.HOADON" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BAN">
+        <PropertyRef Name="MABAN" />
+      </Principal>
+      <Dependent Role="HOADON">
+        <PropertyRef Name="MABAN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_HOADON_NHAN_VIEN_NHANVIEN">
+    <End Role="NHANVIEN" Type="Self.NHANVIEN" Multiplicity="0..1" />
+    <End Role="HOADON" Type="Self.HOADON" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NHANVIEN">
+        <PropertyRef Name="MANV" />
+      </Principal>
+      <Dependent Role="HOADON">
+        <PropertyRef Name="MANV" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_HOADON_NHANVIEN_THANHTOAN">
+    <End Role="NHANVIEN" Type="Self.NHANVIEN" Multiplicity="0..1" />
+    <End Role="HOADON" Type="Self.HOADON" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NHANVIEN">
+        <PropertyRef Name="MANV" />
+      </Principal>
+      <Dependent Role="HOADON">
+        <PropertyRef Name="NV_THANHTOAN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MENU_REFERENCE_LOAIMATH">
+    <End Role="LOAIMATHANG" Type="Self.LOAIMATHANG" Multiplicity="0..1" />
+    <End Role="MENU" Type="Self.MENU" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LOAIMATHANG">
+        <PropertyRef Name="MALOAI" />
+      </Principal>
+      <Dependent Role="MENU">
+        <PropertyRef Name="MALOAI" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="Menu_TimKiem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="MAMH" Type="varchar" Mode="In" />
+    <Parameter Name="TENMH" Type="nvarchar" Mode="In" />
+    <Parameter Name="GIACAmin" Type="varchar" Mode="In" />
+    <Parameter Name="GIACAmax" Type="varchar" Mode="In" />
+    <Parameter Name="DVT" Type="varchar" Mode="In" />
+    <Parameter Name="MALOAI" Type="varchar" Mode="In" />
+  </Function>
+  <EntityContainer Name="CafeGocNho_63134417ModelStoreContainer">
+    <EntitySet Name="BAN" EntityType="Self.BAN" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CHITIETHOADON" EntityType="Self.CHITIETHOADON" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="HOADON" EntityType="Self.HOADON" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LOAIMATHANG" EntityType="Self.LOAIMATHANG" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MENU" EntityType="Self.MENU" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NHANVIEN" EntityType="Self.NHANVIEN" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_CHITIETH_CHI_TIET__MENU" Association="Self.FK_CHITIETH_CHI_TIET__MENU">
+      <End Role="MENU" EntitySet="MENU" />
+      <End Role="CHITIETHOADON" EntitySet="CHITIETHOADON" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CHITIETH_PHIEU_XUA_HOADON" Association="Self.FK_CHITIETH_PHIEU_XUA_HOADON">
+      <End Role="HOADON" EntitySet="HOADON" />
+      <End Role="CHITIETHOADON" EntitySet="CHITIETHOADON" />
+    </AssociationSet>
+    <AssociationSet Name="FK_HOADON_BAN_PHIEU_BAN" Association="Self.FK_HOADON_BAN_PHIEU_BAN">
+      <End Role="BAN" EntitySet="BAN" />
+      <End Role="HOADON" EntitySet="HOADON" />
+    </AssociationSet>
+    <AssociationSet Name="FK_HOADON_NHAN_VIEN_NHANVIEN" Association="Self.FK_HOADON_NHAN_VIEN_NHANVIEN">
+      <End Role="NHANVIEN" EntitySet="NHANVIEN" />
+      <End Role="HOADON" EntitySet="HOADON" />
+    </AssociationSet>
+    <AssociationSet Name="FK_HOADON_NHANVIEN_THANHTOAN" Association="Self.FK_HOADON_NHANVIEN_THANHTOAN">
+      <End Role="NHANVIEN" EntitySet="NHANVIEN" />
+      <End Role="HOADON" EntitySet="HOADON" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MENU_REFERENCE_LOAIMATH" Association="Self.FK_MENU_REFERENCE_LOAIMATH">
+      <End Role="LOAIMATHANG" EntitySet="LOAIMATHANG" />
+      <End Role="MENU" EntitySet="MENU" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

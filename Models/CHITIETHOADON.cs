@@ -18,6 +18,7 @@ namespace CafeGocNho_63134417.Models
         public string MAMH { get; set; }
         public Nullable<int> SOLUONG { get; set; }
         public int id { get; set; }
+        public Nullable<int> GIABAN { get; set; }
     
         public virtual MENU MENU { get; set; }
         public virtual HOADON HOADON { get; set; }

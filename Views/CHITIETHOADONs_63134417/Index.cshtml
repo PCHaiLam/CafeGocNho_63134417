@@ -3,6 +3,12 @@
 @{
     ViewBag.Title = "Chi tiết hóa đơn";
     Layout = null;
+
+    //kiểm tra phân quyền
+    if (Session["Role"] == null || Session["Role"].ToString() == "Unknown")
+    {
+        Response.Redirect("~/PhanQuyen_63134417/DangNhap");
+    }
 }
 
 <!DOCTYPE html>

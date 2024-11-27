@@ -15,7 +15,7 @@ namespace CafeGocNho_63134417.Helper
             {
                 var maMax = db.HOADON.ToList().Select(n => n.MAHD).Max();
                 int maHD = int.Parse(maMax.Substring(2)) + 1;
-                return "HD" + maHD.ToString().PadLeft(3, '0');
+                return "HD" + maHD.ToString().PadLeft(4, '0');
             } else
 
             if (table == "NHANVIEN")

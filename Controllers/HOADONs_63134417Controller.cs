@@ -29,8 +29,9 @@ namespace CafeGocNho_63134417.Controllers
                     MAHD = maHD,
                     MABAN = maBan,
                     MANV = maNV,
-                    THOIGIAN = DateTime.Now,
-                    THANHTOAN = 0
+                    THOIGIAN_NHANDON = DateTime.Now,
+                    THANHTOAN = 0,
+                    GIAMGIA = 0,
                 };
 
                 db.HOADON.Add(hoaDon);
@@ -60,6 +61,7 @@ namespace CafeGocNho_63134417.Controllers
                         MAHD = hoaDon.MAHD,
                         MAMH = item.MAMH,
                         SOLUONG = item.SOLUONG,
+                        GIABAN = item.GIABAN,
                     };
                     db.CHITIETHOADON.Add(chiTietHoaDon);
                 }
@@ -69,7 +71,7 @@ namespace CafeGocNho_63134417.Controllers
             return RedirectToAction("Index", new { tableId = maBan });
         }
         [HttpPost]
-        public ActionResult ThanhToan_63134417(string maHD, string maBan, int discount)
+        public ActionResult ThanhToan_63134417(string maHD, string maBan, int discount, string maNV)
         {
             var hoaDon = db.HOADON.FirstOrDefault(h => h.MAHD == maHD && h.MABAN.ToString() == maBan && h.THANHTOAN == 0);
 
@@ -77,8 +79,10 @@ namespace CafeGocNho_63134417.Controllers
             {
                 hoaDon.THANHTOAN = 1;
                 hoaDon.BAN.TINHTRANG = 0;
+                hoaDon.THOIGIAN_THANHTOAN = DateTime.Now;
                 hoaDon.GIAMGIA = discount;
-                hoaDon.NV_THANHTOAN = Session["MaNV"].ToString();
+                hoaDon.NV_THANHTOAN = maNV;
+                hoaDon.TRANGTHAI_XOA = 0;
 
                 var chiTietHoaDonList = db.CHITIETHOADON.Where(ct => ct.MAHD == maHD).ToList();
 
@@ -88,6 +92,8 @@ namespace CafeGocNho_63134417.Controllers
                     var menuItem = db.MENU.FirstOrDefault(m => m.MAMH == chiTiet.MAMH);
                     if (menuItem != null)
                     {
+                        //Ghi giá trong menu sang chi tiết hóa đơn
+                        chiTiet.GIABAN = menuItem.GIACA;
                         // Trừ số lượng trong MENU
                         menuItem.SOLUONGHANG -= chiTiet.SOLUONG;
 
@@ -103,6 +109,7 @@ namespace CafeGocNho_63134417.Controllers
 
             return RedirectToAction("Index", new { tableId = maBan });
         }
+        //xóa mặt hàng trong hóa đơn
         [HttpPost]
         public ActionResult Xoa_63134417(string maHD, string maBan, string maMH)
         {
@@ -117,7 +124,6 @@ namespace CafeGocNho_63134417.Controllers
 
             return RedirectToAction("Index", new { tableId = maBan });
         }
-
         public ActionResult Index(string tableId = null)
         {
             if (string.IsNullOrEmpty(tableId))
@@ -169,11 +175,11 @@ namespace CafeGocNho_63134417.Controllers
             if (dateOption == "today")
             {
                 DateTime today = DateTime.Today;
-                danhSachHoaDon = danhSachHoaDon.Where(h => DbFunctions.TruncateTime(h.THOIGIAN) == today);
+                danhSachHoaDon = danhSachHoaDon.Where(h => DbFunctions.TruncateTime(h.THOIGIAN_THANHTOAN) == today);
             }
             else if (dateOption == "custom" && date.HasValue)
             {
-                danhSachHoaDon = danhSachHoaDon.Where(h => DbFunctions.TruncateTime(h.THOIGIAN) == DbFunctions.TruncateTime(date.Value));
+                danhSachHoaDon = danhSachHoaDon.Where(h => DbFunctions.TruncateTime(h.THOIGIAN_THANHTOAN) == DbFunctions.TruncateTime(date.Value));
             }
             else if (dateOption == "all")
             {
@@ -189,20 +195,20 @@ namespace CafeGocNho_63134417.Controllers
         {
             DateTime today = DateTime.Today;
             var doanhThu = db.HOADON
-                            .Where(h => h.THANHTOAN == 1 && DbFunctions.TruncateTime(h.THOIGIAN) == today)
-                            .Sum(h => h.CHITIETHOADON.Sum(ct => (ct.SOLUONG * ct.MENU.GIACA) *  (1 - h.GIAMGIA*0.01) )) ?? 0;
+                            .Where(h => h.THANHTOAN == 1 && h.TRANGTHAI_XOA == 0 && DbFunctions.TruncateTime(h.THOIGIAN_THANHTOAN) == today)
+                            .Sum(h => h.CHITIETHOADON.Sum(ct => (ct.SOLUONG * ct.GIABAN) *  (1 - h.GIAMGIA*0.01) )) ?? 0;
 
             var hangDaBan = db.CHITIETHOADON
-                                .Where(c => DbFunctions.TruncateTime(c.HOADON.THOIGIAN) == today && c.HOADON.THANHTOAN == 1)
+                                .Where(c => DbFunctions.TruncateTime(c.HOADON.THOIGIAN_THANHTOAN) == today && c.HOADON.THANHTOAN == 1)
                                 .Sum(ct => ct.SOLUONG) ??0;
 
             var hangTon = db.MENU.Sum(m => m.SOLUONGHANG) ??0;
 
-            var chiTietSanPhamDaBan = db.CHITIETHOADON.Where(c => DbFunctions.TruncateTime(c.HOADON.THOIGIAN) == today && c.HOADON.THANHTOAN == 1).ToList();
+            var chiTietSanPhamDaBan = db.CHITIETHOADON.Where(c => DbFunctions.TruncateTime(c.HOADON.THOIGIAN_THANHTOAN) == today && c.HOADON.THANHTOAN == 1).ToList();
 
             var tongTienhang = db.HOADON
-                            .Where(h => h.THANHTOAN == 1 && DbFunctions.TruncateTime(h.THOIGIAN) == today)
-                            .Sum(h => h.CHITIETHOADON.Sum(ct => (ct.SOLUONG * ct.MENU.GIACA))) ?? 0;
+                            .Where(h => h.THANHTOAN == 1 && h.TRANGTHAI_XOA==0 && DbFunctions.TruncateTime(h.THOIGIAN_THANHTOAN) == today)
+                            .Sum(h => h.CHITIETHOADON.Sum(ct => (ct.SOLUONG * ct.GIABAN))) ?? 0;
 
             ViewBag.doanhThu =  doanhThu;
             ViewBag.hangDaBan = hangDaBan;

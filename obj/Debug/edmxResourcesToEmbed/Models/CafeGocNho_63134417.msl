@@ -12,6 +12,7 @@
     <EntitySetMapping Name="CHITIETHOADON">
       <EntityTypeMapping TypeName="CafeGocNho_63134417Model.CHITIETHOADON">
         <MappingFragment StoreEntitySet="CHITIETHOADON">
+          <ScalarProperty Name="GIABAN" ColumnName="GIABAN" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="MAHD" ColumnName="MAHD" />
           <ScalarProperty Name="MAMH" ColumnName="MAMH" />
@@ -22,13 +23,15 @@
     <EntitySetMapping Name="HOADON">
       <EntityTypeMapping TypeName="CafeGocNho_63134417Model.HOADON">
         <MappingFragment StoreEntitySet="HOADON">
+          <ScalarProperty Name="THOIGIAN_THANHTOAN" ColumnName="THOIGIAN_THANHTOAN" />
+          <ScalarProperty Name="THOIGIAN_NHANDON" ColumnName="THOIGIAN_NHANDON" />
+          <ScalarProperty Name="TRANGTHAI_XOA" ColumnName="TRANGTHAI_XOA" />
           <ScalarProperty Name="NV_THANHTOAN" ColumnName="NV_THANHTOAN" />
           <ScalarProperty Name="GIAMGIA" ColumnName="GIAMGIA" />
           <ScalarProperty Name="THANHTOAN" ColumnName="THANHTOAN" />
           <ScalarProperty Name="MAHD" ColumnName="MAHD" />
           <ScalarProperty Name="MABAN" ColumnName="MABAN" />
           <ScalarProperty Name="MANV" ColumnName="MANV" />
-          <ScalarProperty Name="THOIGIAN" ColumnName="THOIGIAN" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -43,6 +46,7 @@
     <EntitySetMapping Name="MENU">
       <EntityTypeMapping TypeName="CafeGocNho_63134417Model.MENU">
         <MappingFragment StoreEntitySet="MENU">
+          <ScalarProperty Name="TRANGTHAI_XOA" ColumnName="TRANGTHAI_XOA" />
           <ScalarProperty Name="SOLUONGHANG" ColumnName="SOLUONGHANG" />
           <ScalarProperty Name="ANH" ColumnName="ANH" />
           <ScalarProperty Name="MAMH" ColumnName="MAMH" />

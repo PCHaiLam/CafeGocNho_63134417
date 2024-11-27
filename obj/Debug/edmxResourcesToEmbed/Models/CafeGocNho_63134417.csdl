@@ -18,6 +18,7 @@
     <NavigationProperty Name="MENU" Relationship="Self.FK_CHITIETH_CHI_TIET__MENU" FromRole="CHITIETHOADON" ToRole="MENU" />
     <NavigationProperty Name="HOADON" Relationship="Self.FK_CHITIETH_PHIEU_XUA_HOADON" FromRole="CHITIETHOADON" ToRole="HOADON" />
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GIABAN" Type="Int32" />
   </EntityType>
   <EntityType Name="HOADON">
     <Key>
@@ -26,7 +27,6 @@
     <Property Name="MAHD" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="MABAN" Type="Int32" />
     <Property Name="MANV" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-    <Property Name="THOIGIAN" Type="DateTime" Precision="3" />
     <NavigationProperty Name="BAN" Relationship="Self.FK_HOADON_BAN_PHIEU_BAN" FromRole="HOADON" ToRole="BAN" />
     <NavigationProperty Name="CHITIETHOADON" Relationship="Self.FK_CHITIETH_PHIEU_XUA_HOADON" FromRole="HOADON" ToRole="CHITIETHOADON" />
     <NavigationProperty Name="NHANVIEN" Relationship="Self.FK_HOADON_NHAN_VIEN_NHANVIEN" FromRole="HOADON" ToRole="NHANVIEN" />
@@ -34,6 +34,9 @@
     <Property Name="GIAMGIA" Type="Int32" />
     <Property Name="NV_THANHTOAN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="NHANVIEN1" Relationship="CafeGocNho_63134417Model.FK_HOADON_NHANVIEN_THANHTOAN" FromRole="HOADON" ToRole="NHANVIEN" />
+    <Property Name="TRANGTHAI_XOA" Type="Int16" />
+    <Property Name="THOIGIAN_NHANDON" Type="DateTime" Precision="3" />
+    <Property Name="THOIGIAN_THANHTOAN" Type="DateTime" />
   </EntityType>
   <EntityType Name="LOAIMATHANG">
     <Key>
@@ -54,8 +57,9 @@
     <Property Name="MALOAI" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="CHITIETHOADON" Relationship="Self.FK_CHITIETH_CHI_TIET__MENU" FromRole="MENU" ToRole="CHITIETHOADON" />
     <NavigationProperty Name="LOAIMATHANG" Relationship="Self.FK_MENU_REFERENCE_LOAIMATH" FromRole="MENU" ToRole="LOAIMATHANG" />
-    <Property Name="ANH" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ANH" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
     <Property Name="SOLUONGHANG" Type="Int32" />
+    <Property Name="TRANGTHAI_XOA" Type="Int16" />
   </EntityType>
   <EntityType Name="NHANVIEN">
     <Key>

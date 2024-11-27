@@ -4,6 +4,12 @@
     ViewBag.Title = "Bàn";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var selectedTable = Request.QueryString["tableId"];
+
+    //kiểm tra phân quyền
+    if (Session["Role"] == null || Session["Role"].ToString() == "Unknown")
+    {
+        Response.Redirect("~/PhanQuyen_63134417/DangNhap");
+    }
 }
     <!-- Cột Danh Sách Bàn -->
     <div class="flex flex-col w-full h-[536px]">

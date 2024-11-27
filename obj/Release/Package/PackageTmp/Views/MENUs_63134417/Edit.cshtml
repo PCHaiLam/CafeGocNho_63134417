@@ -1,0 +1,87 @@
+﻿@model CafeGocNho_63134417.Models.MENU
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutThongKe_63134417.cshtml";
+}
+
+<div>
+    <a title="Quay lại" href="@Url.Action("Index", "MENUs_63134417")" class="px-3 py-1 rounded-xl active:bg-yellow-500 bg-yellow-400"><i class="fa-solid fa-left-long"></i></a>
+</div>
+
+<div class="w-2/3 mx-auto min-h-[450px] bg-white border-2 rounded-xl p-5 mt-4">
+    <h1 class="font-bold">Thông tin hàng hóa</h1>
+    <hr class="my-4" />
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+<div class="grid grid-cols-2 gap-4 mt-4">
+    <div class="">
+        @Html.LabelFor(model => model.MAMH, "Mã hàng hóa", htmlAttributes: new { @class = "font-bold w-32 text-left" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.MAMH, new { htmlAttributes = new { @class = "bg-gray-200 w-full px-1 py-1 border border-black rounded", @readonly = "@readonly" } })
+            @Html.ValidationMessageFor(model => model.MAMH, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="">
+        @Html.LabelFor(model => model.MALOAI, "Loại", htmlAttributes: new { @class = "font-bold w-32 text-left" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.LOAIMATHANG.TENLOAI, new { htmlAttributes = new { @class = "bg-gray-200 w-full px-1 py-1 border border-black rounded", @readonly = "@readonly" } })
+            @Html.ValidationMessageFor(model => model.MALOAI, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="">
+        @Html.LabelFor(model => model.TENMH, "Tên hàng", htmlAttributes: new { @class = "font-bold w-32 text-left" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.TENMH, new { htmlAttributes = new { @class = "w-full px-1 py-1 border border-black rounded", @required = "required" } })
+            @Html.ValidationMessageFor(model => model.TENMH, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="">
+        @Html.LabelFor(model => model.GIACA, "Giá", htmlAttributes: new { @class = "font-bold w-32 text-left" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.GIACA, new { htmlAttributes = new { @class = "w-full px-1 py-1 border border-black rounded", @required = "required", @type = "number", @min = "1", @max = "500000" } })
+            @Html.ValidationMessageFor(model => model.GIACA, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="">
+        @Html.LabelFor(model => model.SOLUONGHANG, "Số lượng hàng", htmlAttributes: new { @class = "font-bold w-32 text-left" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.SOLUONGHANG, new { htmlAttributes = new { @class = "w-full px-1 py-1 border border-black rounded", @required = "required", @type = "number", @min = "1", @max = "99999" } })
+            @Html.ValidationMessageFor(model => model.SOLUONGHANG, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="">
+        @Html.LabelFor(model => model.DVT, "Đơn vị tính", htmlAttributes: new { @class = "font-bold w-32 text-left" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DVT, new { htmlAttributes = new { @class = "w-full px-1 py-1 border border-black rounded", @required = "required" } })
+            @Html.ValidationMessageFor(model => model.DVT, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="">
+        @Html.LabelFor(model => model.ANH, "Ảnh", htmlAttributes: new { @class = "font-bold w-32 text-left" })
+        <div class="col-md-10">
+            <input type="file" name="Avatar" accept="image/*" class="w-full px-1 py-1 border border-black rounded" />
+            @Html.ValidationMessageFor(model => model.ANH, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="">
+        <img src="@Url.Content("~/Images/imgMenu/" + Model.ANH)" alt="Ảnh" class="w-32 h-32" />
+    </div>
+
+
+    <div class="col-span-2 text-center">
+        <button type="submit" class="px-4 py-1 bg-yellow-400 active:bg-yellow-500 rounded-md hover:bg-yellow-600">Lưu</button>
+    </div>
+</div>
+    }
+</div>
