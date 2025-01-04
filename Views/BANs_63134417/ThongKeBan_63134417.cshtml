@@ -1,8 +1,29 @@
-﻿
+﻿@model IEnumerable<CafeGocNho_63134417.Models.BAN>
+
 @{
-    ViewBag.Title = "ThongKeBan_63134417";
+    ViewBag.Title = "Thống Kê Bàn";
     Layout = "~/Views/Shared/_LayoutThongKe_63134417.cshtml";
 }
 
-<h2>ThongKeBan_63134417</h2>
+<form class="text-center mb-4" method="post" action="@Url.Action("Create", "BANs_63134417")">
+    <h2 class="text-center text-lg font-bold">Tổng bàn: @Model.Count()</h2>
+    <button type="submit" class="px-4 py-1 bg-yellow-400 active:bg-yellow-500 text-black rounded-md">Thêm bàn</button>
+</form>
 
+<div class="grid gap-4 grid-cols-10">
+    @foreach (var ban in Model)
+    {
+        <div class="grid grid-cols-2 p-3 w-[120px] bg-white border rounded shadow justify-items-end">
+            <p class="px-4 py-2 
+             @(ban.TINHTRANG == 1 ? "bg-yellow-300 opacity-90" : "bg-gray-200")">
+                @ban.MABAN
+            </p>
+            <form method="post" action="@Url.Action("DeleteConfirmed", "BANs_63134417")">
+                <input type="hidden" name="MABAN" value="@ban.MABAN" />
+                <button type="submit" class="" title="Xóa">
+                    <img src="~/Images/delete.png" width="20" />
+                </button>
+            </form>
+        </div>
+    }
+</div>

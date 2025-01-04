@@ -12,30 +12,21 @@ namespace CafeGocNho_63134417.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class NHANVIEN
+    public partial class CHUCVU
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public NHANVIEN()
+        public CHUCVU()
         {
-            this.HOADON = new HashSet<HOADON>();
-            this.HOADON1 = new HashSet<HOADON>();
+            this.CHUCVU_QUYEN = new HashSet<CHUCVU_QUYEN>();
+            this.NHANVIEN = new HashSet<NHANVIEN>();
         }
     
-        public string MANV { get; set; }
-        public string HONV { get; set; }
-        public string TENNV { get; set; }
-        public string EMAIL { get; set; }
-        public string DIACHI { get; set; }
-        public string MATKHAU { get; set; }
-        public Nullable<short> GIOITINH { get; set; }
-        public string SDT { get; set; }
-        public string CCCD { get; set; }
         public string MACV { get; set; }
+        public string TENCV { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<HOADON> HOADON { get; set; }
+        public virtual ICollection<CHUCVU_QUYEN> CHUCVU_QUYEN { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<HOADON> HOADON1 { get; set; }
-        public virtual CHUCVU CHUCVU { get; set; }
+        public virtual ICollection<NHANVIEN> NHANVIEN { get; set; }
     }
 }

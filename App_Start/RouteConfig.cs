@@ -16,7 +16,7 @@ namespace CafeGocNho_63134417
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "PhanQuyen_63134417", action = "DangNhap", id = UrlParameter.Optional }
+                defaults: new { controller = "CHUCVUs_63134417", action = "DangNhap", id = UrlParameter.Optional }
             );
         }
     }

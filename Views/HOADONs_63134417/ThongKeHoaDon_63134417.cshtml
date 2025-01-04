@@ -9,16 +9,9 @@
     string selectedDate = Request.QueryString["date"];
 }
 
-<div class="grid grid-cols-4 mt-4">
-    <div class="w-72 h-full">
+<div class="grid grid-cols-4 gap-4 ">
+    <div class="w-full h-full">
         <div class="bg-white text-black p-4 border-2 rounded-xl shadow">
-            <h1 class="font-bold text-3xl text-center uppercase">Tìm kiếm</h1>
-            <form method="get" action="@Url.Action("ThongKeHoaDon_63134417", "HOADONs_63134417")" class="mt-4">
-                <input type="text" name="search" placeholder="Tìm mã hóa đơn" class="w-full p-2 border rounded" />
-                <button type="submit" class="mt-4 w-full bg-blue-500 text-white py-2 rounded">Tìm</button>
-            </form>
-        </div>
-        <div class="mt-6 bg-white text-black p-4 border-2 rounded-xl shadow">
             <h1 class="font-bold text-3xl text-center uppercase">Xem theo ngày</h1>
             <form method="get" action="@Url.Action("ThongKeHoaDon_63134417", "HOADONs_63134417")" class="mt-4">
                 <label class="flex items-center">
@@ -46,7 +39,7 @@
             </form>
         </div>
     </div>
-    <div class="col-span-3 flex flex-col justify-between w-full min-h-[550px] bg-white border-2 rounded-xl p-4">
+    <div class="col-span-3 flex flex-col justify-between w-full min-h-[580px] bg-white border-2 rounded-xl p-4">
         <div class="border-2 h-full text-left">
             @grid.GetHtml(
          tableStyle: "h-full w-full text-left rounded-lg",
@@ -62,18 +55,44 @@
            columns: new[]  // colums in grid
            {
                         grid.Column("MAHD","Mã hóa đơn", style:"w-[120px]"),
-                        grid.Column("THOIGIAN_NHANDON","Thời gian nhận đơn", style:"w-[150px]", format: @<text>@item.THOIGIAN_NHANDON.ToString("dd/MM/yyyy hh:mm")</text>),
-                        grid.Column("NHANVIEN.TENNV","Người nhận", style:"w-[130px]"),
-                        grid.Column("GIAMGIA","Giảm giá(%)", style:"w-[100px]"),
-                        grid.Column("THANHTOAN", "Trạng thái", style: "w-[130px]",
-                                format: @<text>
-                                            @Html.Raw(item.THANHTOAN == 1 ? "<span class='text-green-500 font-bold'>Đã thanh toán</span>" : "<span class='text-red-500 font-bold'>Chưa thanh toán</span>")
-                                        </text>),
-                        grid.Column("", style:"w-[100px]", format: @<text> <a href="@Url.Action("ChiTiet_63134417","CHITIETHOADONs_63134417",new { id = item.MAHD})" >Chi tiết</a> </text>),
-           }
+                        grid.Column("THOIGIAN_THANHTOAN","Thời gian (giờ đi)", style:"w-[150px]", format: @<text>@(item.THOIGIAN_THANHTOAN == null ? "--/--/---- --:--" : item.THOIGIAN_THANHTOAN.ToString("dd/MM/yyyy hh:mm"))</text>),
+grid.Column("NHANVIEN.TENNV","Người nhận", style:"w-[130px]"),
+grid.Column("GIAMGIA","Giảm giá(%)", style:"w-[100px]"),
+grid.Column("THANHTOAN", "Trạng thái", style: "w-[130px]",
+format: @<text>
+                            @Html.Raw(item.THANHTOAN == 1 ? "<span class='text-green-500 font-bold'>Đã thanh toán</span>" : "<span class='text-red-500 font-bold'>Chưa thanh toán</span>")
+</text>),
+grid.Column("", style:"w-[100px]",
+format: @<text>
+    @if (item.THANHTOAN != 1)
+        {
+    <span class="text-gray-400 cursor-not-allowed">Chi tiết</span>
+        }
+        else
+        {
+    <a href="@Url.Action("ChiTiet_63134417", "CHITIETHOADONs_63134417", new { id = item.MAHD })" class="text-blue-500 hover:underline">Chi tiết</a>
+        }
+</text>),
+}
 )
         </div>
     </div>
+
+    <script>
+
+        function hideDateInput() {
+            const dateInput = document.getElementById("customDate");
+            dateInput.classList.remove("block");
+            dateInput.classList.add("hidden");
+        }
+
+        function showDateInput() {
+            const dateInput = document.getElementById("customDate");
+            dateInput.classList.remove("hidden");
+            dateInput.classList.add("block");
+        }
+
+    </script>
 </div>
 
 

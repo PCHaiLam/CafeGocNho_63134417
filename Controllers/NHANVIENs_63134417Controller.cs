@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -13,18 +14,12 @@ namespace CafeGocNho_63134417.Controllers
     public class NHANVIENs_63134417Controller : Controller
     {
         private CafeGocNho_63134417Entities db = new CafeGocNho_63134417Entities();
+        private readonly Helper.LayId layId = new Helper.LayId();
 
         // GET: NHANVIENs_63134417
         public ActionResult Index()
         {
             return View(db.NHANVIEN.ToList());
-        }
-
-        //ThongKeNhanVien_63134417
-        public ActionResult ThongKeNhanVien_63134417()
-        {
-            return View()
-;
         }
 
         // GET: NHANVIENs_63134417/Details/5
@@ -45,6 +40,7 @@ namespace CafeGocNho_63134417.Controllers
         // GET: NHANVIENs_63134417/Create
         public ActionResult Create()
         {
+            ViewBag.MANV = layId.LayMa("NHANVIEN");
             return View();
         }
 
@@ -53,17 +49,40 @@ namespace CafeGocNho_63134417.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "MANV,HONV,TENNV,EMAIL,DIACHI,MATKHAU,CHUCVU,GIOITINH,SDT,CCCD")] NHANVIEN nHANVIEN)
+        public ActionResult Create([Bind(Include = "MANV,HONV,TENNV,EMAIL,DIACHI,MATKHAU,GIOITINH,SDT,CCCD,MACV")] NHANVIEN nHANVIEN)
         {
+            if (nHANVIEN == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            nHANVIEN.MANV = layId.LayMa("NHANVIEN");
+            nHANVIEN.MATKHAU = Helper.Md5Helper.EncryptMD5(nHANVIEN.MATKHAU);
+
             if (ModelState.IsValid)
             {
-                db.NHANVIEN.Add(nHANVIEN);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    db.NHANVIEN.Add(nHANVIEN);
+                    db.SaveChanges();
+                    Session["Notification"] = "Thêm nhân viên thành công!";
+                    return RedirectToAction("Index");
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var validationError in ex.EntityValidationErrors)
+                    {
+                        foreach (var error in validationError.ValidationErrors)
+                        {
+                            ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                        }
+                    }
+                }
             }
 
             return View(nHANVIEN);
         }
+
 
         // GET: NHANVIENs_63134417/Edit/5
         public ActionResult Edit(string id)
@@ -85,12 +104,13 @@ namespace CafeGocNho_63134417.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "MANV,HONV,TENNV,EMAIL,DIACHI,MATKHAU,CHUCVU,GIOITINH,SDT,CCCD")] NHANVIEN nHANVIEN)
+        public ActionResult Edit([Bind(Include = "MANV,HONV,TENNV,EMAIL,DIACHI,MATKHAU,MACV,GIOITINH,SDT,CCCD")] NHANVIEN nHANVIEN)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(nHANVIEN).State = EntityState.Modified;
                 db.SaveChanges();
+                Session["Notification"] = "Sửa thông tin nhân viên thành công!";
                 return RedirectToAction("Index");
             }
             return View(nHANVIEN);
@@ -112,13 +132,13 @@ namespace CafeGocNho_63134417.Controllers
         }
 
         // POST: NHANVIENs_63134417/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        [HttpPost]
+        public ActionResult DeleteConfirmed(string MANV)
         {
-            NHANVIEN nHANVIEN = db.NHANVIEN.Find(id);
+            NHANVIEN nHANVIEN = db.NHANVIEN.Find(MANV);
             db.NHANVIEN.Remove(nHANVIEN);
             db.SaveChanges();
+            Session["Notification"] = "Xóa nhân viên thành công!";
             return RedirectToAction("Index");
         }
 

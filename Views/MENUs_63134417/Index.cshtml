@@ -4,14 +4,7 @@
     ViewBag.Title = "Menu";
     Layout = "~/Views/Shared/_LayoutThongKe_63134417.cshtml";
     var grid = new WebGrid(Model, canPage: false);
-
-    //kiểm tra phân quyền
-    if (Session["Role"] == null || Session["Role"].ToString() == "Unknown")
-    {
-        Response.Redirect("~/PhanQuyen_63134417/DangNhap");
-    }
 }
-
 <style>
     .footer-style a {
         background-color: black;
@@ -26,14 +19,15 @@
         }
 </style>
 
-<div class="flex justify-between pb-2 items-center mt-4">
+<div class="flex justify-between pb-2 items-center">
     <form id="searchForm" method="get" class="flex items-center">
         <input type="text" name="search" placeholder="Tìm kiếm món ăn..." value="@ViewBag.Search" class="w-80 border px-2 py-1 rounded-md focus:ring-2 focus:ring-yellow-500">
         <button type="submit" class="ml-2 px-4 py-1 bg-yellow-400 active:bg-yellow-500 text-black rounded-md">Tìm kiếm</button>
     </form>
 
-    <i title="Làm mới" class="fa-solid fa-rotate text-xl ml-2 p-2 hover:text-yellow-500 cursor-pointer sm:motion-safe:hover:animate-spin" onclick="location.href='@Url.Action("Index", "MENUs_63134417")'"></i>
-    
+    @*<a href="@Url.Action("NhapHang_63134417","MENUs_63134417")" class="ml-2 px-4 py-1 bg-yellow-400 active:bg-yellow-500 text-black rounded-md">Nhập hàng</a>*@
+
+
     <form id="filterForm" method="get" class="flex items-center ml-2">
         <select id="filterSelect" name="filter" class="w-80 border border-1 rounded shadow py-1" onchange="document.getElementById('filterForm').submit();">
             <option value="all" @(ViewBag.Filter == "all" ? "selected" : "")>Tất cả</option>
@@ -50,12 +44,13 @@
     </form>
 
     <a href="@Url.Action("Create","MENUs_63134417")" class="ml-2 px-4 py-1 bg-yellow-400 active:bg-yellow-500 text-black rounded-md">Thêm mặt hàng</a>
+
 </div>
-<div class="h-[510px] overflow-scroll overflow-x-hidden overflow-y-visible shadow-lg">
+<div class="h-[540px] overflow-scroll overflow-x-hidden overflow-y-visible shadow-lg">
 
     @grid.GetHtml(
         tableStyle: "w-full text-left rounded-lg",
-        headerStyle: "bg-yellow-300 opacity-70",
+        headerStyle: "bg-yellow-400 opacity-70",
         footerStyle: "font-bold text-center footer-style",
         fillEmptyRows: true,
         mode: WebGridPagerModes.All,
@@ -75,10 +70,9 @@ grid.Column("ANH", "Ảnh", style:"w-[150px]", format: @<text>
         <img src="@(string.IsNullOrEmpty(item.ANH) ? Url.Content("~/Images/plate-utensils.png") : Url.Content("~/Images/imgMenu/" + item.ANH))"
              alt="Image" class="h-[150px] p-1 shadow border" />
     </div></text>),
-grid.Column("LOAIMATHANG.TENLOAI","Tên mặt hàng", style:"w-[90px]"),
-grid.Column("MAMH","Mã mặt hàng", style:"w-[90px]"),
+grid.Column("SOLUONGHANG","Số lượng", style:"w-[90px]"),
 
-grid.Column("","", style:"w-[100px]", format: @<text><a href="@Url.Action("Edit","MENUs_63134417", new { id = item.MAMH})">Xem chi tiết</a></text>)
+grid.Column("","", style:"w-[100px]", format: @<text><a class="text-blue-500 hover:underline" href="@Url.Action("Edit","MENUs_63134417", new { id = item.MAMH})">Xem chi tiết</a></text>)
 
 }
 )

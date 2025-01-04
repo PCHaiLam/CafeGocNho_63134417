@@ -33,6 +33,9 @@ namespace CafeGocNho_63134417.Models
         public virtual DbSet<LOAIMATHANG> LOAIMATHANG { get; set; }
         public virtual DbSet<MENU> MENU { get; set; }
         public virtual DbSet<NHANVIEN> NHANVIEN { get; set; }
+        public virtual DbSet<CHUCVU> CHUCVU { get; set; }
+        public virtual DbSet<CHUCVU_QUYEN> CHUCVU_QUYEN { get; set; }
+        public virtual DbSet<QUYEN> QUYEN { get; set; }
     
         public virtual int HoaDon_TimKiem(string mAHD, string mABAN, string nGAYmin, string nGAYmax, string mANV)
         {

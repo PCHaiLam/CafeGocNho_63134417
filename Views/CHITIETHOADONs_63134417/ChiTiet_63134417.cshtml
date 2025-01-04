@@ -1,8 +1,79 @@
-﻿
+﻿@model IEnumerable<CafeGocNho_63134417.Models.CHITIETHOADON>
+
 @{
-    ViewBag.Title = "ChiTiet_63134417";
+    ViewBag.Title = "Chi tiết hóa đơn";
     Layout = "~/Views/Shared/_LayoutThongKe_63134417.cshtml";
+
+    int tongHang = 0;
+    int tongTien = 0;
 }
+<div>
+    <a title="Quay lại" href="@Url.Action("ThongKeHoaDon_63134417", "HOADONs_63134417")" class="px-3 py-1 rounded-xl active:bg-yellow-500 bg-yellow-400"><i class="fa-solid fa-left-long"></i></a>
+</div>
+<div class="w-full grid grid-cols-3 gap-10">
+    <div class="w-full flex flex-col">
+        <div class="w-full grid grid-cols-3 border-b-2 border-gray-400 py-3"><div>Mã hóa đơn:</div><div class="col-span-2 font-bold">@ViewBag.HoaDon.MAHD</div></div>
+        <div class="w-full grid grid-cols-3 border-b-2 border-gray-400 py-3"><div>Giờ đến:</div><div class="col-span-2">@ViewBag.HoaDon.THOIGIAN_NHANDON.ToString("dd/MM/yyyy hh:mm")</div></div>
+        <div class="w-full grid grid-cols-3 border-b-2 border-gray-400 py-3"><div>Giờ thanh toán:</div><div class="col-span-2">@ViewBag.HoaDon.THOIGIAN_THANHTOAN.ToString("dd/MM/yyyy hh:mm")</div></div>
+        <div class="w-full grid grid-cols-3 border-b-2 border-gray-400 py-3"><div>Bàn:</div><div class="col-span-2">@ViewBag.HoaDon.MABAN</div></div>
+    </div>
 
-<h2>ChiTiet_63134417</h2>
+    <div class="w-full flex flex-col">
+        <div class="w-full grid grid-cols-3 border-b-2 border-gray-400 py-3"><div>Trạng thái:</div><div class="col-span-2">@(ViewBag.HoaDon.THANHTOAN == 1 ? "Đã thanh toán" : "Chưa thanh toán")</div></div>
+        <div class="w-full grid grid-cols-3 border-b-2 border-gray-400 py-3"><div>Nhận đơn:</div><div class="col-span-2">@ViewBag.NV_NhanDon</div></div>
+        <div class="w-full grid grid-cols-3 border-b-2 border-gray-400 py-3"><div>Thanh toán:</div><div class="col-span-2">@ViewBag.NV_ThanhToan</div></div>
+    </div>
 
+    <div class="w-full border-l-2 border-gray-400 px-4">
+        <div class="">Ghi chú</div>
+        <div class="w-full max-h">
+            @if(ViewBag.HoaDon.GHICHUHOADON == null || ViewBag.HoaDon.GHICHUHOADON == "")
+            {
+                <div class="text-gray-400">Không có ghi chú</div>
+            }
+            else
+            {
+                <div class="text-gray-700">@ViewBag.HoaDon.GHICHU</div>
+            }
+        </div>
+    </div>
+</div>
+
+<table class="text-left mt-10 w-full border bg-white ">
+    <thead class="bg-gray-300">
+        <tr>
+            <th class="py-2 px-4 border w-36">Mã mặt hàng</th>
+            <th class="py-2 px-4 border">Tên mặt hàng</th>
+            <th class="py-2 px-4 border text-center w-28">Số lượng</th>
+            <th class="py-2 px-4 border text-center w-32">Đơn giá</th>
+            <th class="py-2 px-4 border text-center w-32">Giảm giá(%)</th>
+            <th class="py-2 px-4 border text-right w-32">Giá bán</th>
+            <th class="py-2 px-4 border text-right w-48">Thành tiền (VNĐ)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.CTHD)
+        {
+            <tr>
+                <td class="py-2 px-4 border">@item.MAMH</td>
+                <td class="py-2 px-4 border">@item.MENU.TENMH (@item.MENU.DVT)</td>
+                <td class="py-2 px-4 border text-center">@item.SOLUONG</td>
+                <td class="py-2 px-4 border text-center">@(item.GIABAN.ToString("#,0", System.Globalization.CultureInfo.InvariantCulture))</td>
+                <td class="py-2 px-4 border text-center">@item.GIAMGIA</td>
+                <td class="py-2 px-4 border text-right">@((item.GIABAN * (1-item.GIAMGIA)).ToString("#,0", System.Globalization.CultureInfo.InvariantCulture))</td>
+                <td class="py-2 px-4 border text-right  font-bold">@((item.GIABAN * item.SOLUONG * (1 - item.GIAMGIA)).ToString("#,0", System.Globalization.CultureInfo.InvariantCulture))</td>
+            </tr>
+            tongHang += item.SOLUONG;
+            tongTien += item.GIABAN * item.SOLUONG * (1 - item.GIAMGIA);
+        }
+    </tbody>
+</table>
+
+<div class="w-full flex justify-end mt-5 px-4 text-right">
+    <div class="text-right grid grid-cols-2 gap-y-4">
+        <div class="">Tổng số lượng</div><p class="w-48 font-bold">@tongHang</p>
+        <div class="">Tổng tiền hàng</div><p class="w-48 font-bold">@tongTien.ToString("#,0", System.Globalization.CultureInfo.InvariantCulture)</p>
+        <div class="">Giảm giá hóa đơn</div><p class="w-48 font-bold">@ViewBag.HoaDon.GIAMGIA</p>
+        <div class="">Tổng tiền hóa đơn</div><p class="w-48 font-bold">@((tongTien * (1- (decimal)ViewBag.HoaDon.GIAMGIA / 100)).ToString("#,0", System.Globalization.CultureInfo.InvariantCulture))</p>
+    </div>
+</div>

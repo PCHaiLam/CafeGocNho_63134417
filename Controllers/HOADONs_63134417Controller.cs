@@ -32,6 +32,7 @@ namespace CafeGocNho_63134417.Controllers
                     THOIGIAN_NHANDON = DateTime.Now,
                     THANHTOAN = 0,
                     GIAMGIA = 0,
+                    TRANGTHAI_XOA = 0,
                 };
 
                 db.HOADON.Add(hoaDon);
@@ -42,7 +43,7 @@ namespace CafeGocNho_63134417.Controllers
             if (ban != null)
             {
                 ban.TINHTRANG = 1;  
-                db.SaveChanges(); 
+                db.SaveChanges();
             }
 
             foreach (var item in cart)
@@ -62,16 +63,21 @@ namespace CafeGocNho_63134417.Controllers
                         MAMH = item.MAMH,
                         SOLUONG = item.SOLUONG,
                         GIABAN = item.GIABAN,
+                        GIAMGIA = 0,
+                        GHICHU = ""
                     };
                     db.CHITIETHOADON.Add(chiTietHoaDon);
                 }
             }
             db.SaveChanges();
+            Session["Notification"] = "Thêm đơn hàng thành công!";
 
             return RedirectToAction("Index", new { tableId = maBan });
         }
+
+        //thanh toán
         [HttpPost]
-        public ActionResult ThanhToan_63134417(string maHD, string maBan, int discount, string maNV)
+        public ActionResult ThanhToan_63134417(string maHD, string maBan, string maNV)
         {
             var hoaDon = db.HOADON.FirstOrDefault(h => h.MAHD == maHD && h.MABAN.ToString() == maBan && h.THANHTOAN == 0);
 
@@ -80,7 +86,6 @@ namespace CafeGocNho_63134417.Controllers
                 hoaDon.THANHTOAN = 1;
                 hoaDon.BAN.TINHTRANG = 0;
                 hoaDon.THOIGIAN_THANHTOAN = DateTime.Now;
-                hoaDon.GIAMGIA = discount;
                 hoaDon.NV_THANHTOAN = maNV;
                 hoaDon.TRANGTHAI_XOA = 0;
 
@@ -92,8 +97,6 @@ namespace CafeGocNho_63134417.Controllers
                     var menuItem = db.MENU.FirstOrDefault(m => m.MAMH == chiTiet.MAMH);
                     if (menuItem != null)
                     {
-                        //Ghi giá trong menu sang chi tiết hóa đơn
-                        chiTiet.GIABAN = menuItem.GIACA;
                         // Trừ số lượng trong MENU
                         menuItem.SOLUONGHANG -= chiTiet.SOLUONG;
 
@@ -104,11 +107,13 @@ namespace CafeGocNho_63134417.Controllers
                         }
                     }
                 }
-                    db.SaveChanges();
+                db.SaveChanges();
             }
 
-            return RedirectToAction("Index", new { tableId = maBan });
+            Session["Notification"] = "Thanh toán thành công!";
+            return RedirectToAction("Index", "BANs_63134417");
         }
+        
         //xóa mặt hàng trong hóa đơn
         [HttpPost]
         public ActionResult Xoa_63134417(string maHD, string maBan, string maMH)
@@ -120,10 +125,12 @@ namespace CafeGocNho_63134417.Controllers
             {
                 db.CHITIETHOADON.Remove(chiTietHoaDon);
                 db.SaveChanges();
+                Session["Notification"] = "Thanh toán thành công!";
             }
 
             return RedirectToAction("Index", new { tableId = maBan });
         }
+        
         public ActionResult Index(string tableId = null)
         {
             if (string.IsNullOrEmpty(tableId))
@@ -132,7 +139,7 @@ namespace CafeGocNho_63134417.Controllers
             }
 
             var hOADON = db.HOADON.Include(h => h.BAN).Include(h => h.NHANVIEN);
-            var menu = db.MENU.Include(m => m.LOAIMATHANG);
+            var menu = db.MENU.Include(m => m.LOAIMATHANG).Where(m => m.TRANGTHAI_XOA != 1);
 
             Helper.LayId getid = new Helper.LayId();
             string maHD;
@@ -145,16 +152,19 @@ namespace CafeGocNho_63134417.Controllers
 
             if (chiTietHoaDon.Any())
             {
-                maHD = chiTietHoaDon.First().MAHD; // Lấy mã hóa đơn đầu tiên trong danh sách
-                ViewBag.Pay = true;
+                maHD = chiTietHoaDon.First().MAHD; // Lấy mã hóa đơn đầu tiên trong danh 
+                ViewBag.TenNV = hOADON.Include(h => h.NHANVIEN).Where(h => h.MAHD == maHD).Select(h => h.NHANVIEN.TENNV).FirstOrDefault();
             }
             else
             {
                 maHD = getid.LayMa("HOADON"); // Tạo mã mới nếu không có hóa đơn nào chưa xác nhận
-                ViewBag.Pay = false;
-
+                ViewBag.TenNV = Session["Ten"];
+                ViewBag.ExistBill = false;
             }
+            
+            var discount = hOADON.FirstOrDefault(h => h.MAHD == maHD)?.GIAMGIA ?? 0;
 
+            ViewBag.Discount = discount;
             ViewBag.TableId = tableId;
             ViewBag.BillId = maHD;
             ViewBag.CTHD = chiTietHoaDon;
@@ -162,15 +172,26 @@ namespace CafeGocNho_63134417.Controllers
 
             return View(hOADON.ToList());
         }
+
+        // discount
+        [HttpPost]
+        public ActionResult Discount_63134417(string maHD, int discount)
+        {
+            var hoaDon = db.HOADON.FirstOrDefault(h => h.MAHD == maHD);
+            if (hoaDon != null)
+            {
+                hoaDon.GIAMGIA = discount;
+                db.SaveChanges();
+                Session["Notification"] = $"Giảm giá đơn hàng {discount}% thành công";
+            }
+
+            return RedirectToAction("Index", new { tableId = hoaDon.MABAN });
+        }
+
         //thống kê
-        public ActionResult ThongKeHoaDon_63134417(string search, string dateOption = "", DateTime? date = null)
+        public ActionResult ThongKeHoaDon_63134417(string dateOption = "", DateTime? date = null)
         {
             var danhSachHoaDon = db.HOADON.AsQueryable();
-
-            if (!string.IsNullOrEmpty(search))
-            {
-                danhSachHoaDon = danhSachHoaDon.Where(h => h.MAHD.Contains(search));
-            }
 
             if (dateOption == "today")
             {
@@ -189,7 +210,6 @@ namespace CafeGocNho_63134417.Controllers
 
             return View(result);
         }
-        
         //tổng quan
         public ActionResult TongQuanHoaDon_63134417()
         {
@@ -202,7 +222,7 @@ namespace CafeGocNho_63134417.Controllers
                                 .Where(c => DbFunctions.TruncateTime(c.HOADON.THOIGIAN_THANHTOAN) == today && c.HOADON.THANHTOAN == 1)
                                 .Sum(ct => ct.SOLUONG) ??0;
 
-            var hangTon = db.MENU.Sum(m => m.SOLUONGHANG) ??0;
+            var hangTon = db.MENU.Where(m => m.TRANGTHAI_XOA == 0).Sum(m => m.SOLUONGHANG) ??0;
 
             var chiTietSanPhamDaBan = db.CHITIETHOADON.Where(c => DbFunctions.TruncateTime(c.HOADON.THOIGIAN_THANHTOAN) == today && c.HOADON.THANHTOAN == 1).ToList();
 

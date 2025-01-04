@@ -15,14 +15,14 @@ namespace CafeGocNho_63134417.Helper
             {
                 var maMax = db.HOADON.ToList().Select(n => n.MAHD).Max();
                 int maHD = int.Parse(maMax.Substring(2)) + 1;
-                return "HD" + maHD.ToString().PadLeft(4, '0');
+                return "HD" + maHD.ToString().PadLeft(3, '0');
             } else
 
             if (table == "NHANVIEN")
             {
                 var maMax = db.NHANVIEN.ToList().Select(n => n.MANV).Max();
                 int maNV = int.Parse(maMax.Substring(2)) + 1;
-                return "NV" + maNV.ToString().PadLeft(2, '0');
+                return "NV" + maNV.ToString().PadLeft(3, '0');
             } else
 
             if (table == "BAN")

@@ -18,7 +18,7 @@ namespace CafeGocNho_63134417.Controllers
         // GET: MENUs_63134417
         public ActionResult Index(string search = "", string filter = "all")
         {
-            IQueryable<MENU> menuQuery = db.MENU.Include(m => m.LOAIMATHANG);
+            IQueryable<MENU> menuQuery = db.MENU.Include(m => m.LOAIMATHANG).Where(m => m.TRANGTHAI_XOA != 1);
 
             if (filter != "all")
             {
@@ -67,7 +67,7 @@ namespace CafeGocNho_63134417.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "MAMH,TENMH,GIACA,DVT,ANH,SOLUONGHANG,MALOAI")] MENU mENU, string MALOAI)
         {
-            var img = Request.Files["Avatar"];
+            var img = Request.Files["Anh"];
             string postedFileName = System.IO.Path.GetFileName(img.FileName);
             var savePath = Server.MapPath("/Images/imgMenu/" + postedFileName);
             img.SaveAs(savePath);
@@ -108,11 +108,50 @@ namespace CafeGocNho_63134417.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "TENMH,GIACA,DVT,ANH,SOLUONGHANG")] MENU mENU)
+        public ActionResult Edit([Bind(Include = "MAMH,TENMH,GIACA,DVT,ANH,SOLUONGHANG")] MENU mENU)
         {
+            // Lấy thông tin đối tượng từ database để lấy tên file ảnh cũ
+            var menuToUpdate = db.MENU.Find(mENU.MAMH);
+            string oldFileName = menuToUpdate.ANH;
+
+            if (Request.Files.Count > 0)
+            {
+                var img = Request.Files["Anh"]; 
+
+                if (img != null && img.ContentLength > 0)
+                {
+                    // Người dùng có chọn ảnh mới
+                    string postedFileName = System.IO.Path.GetFileName(img.FileName);
+                    var savePath = Server.MapPath("/Images/imgMenu/" + postedFileName);
+                    img.SaveAs(savePath);
+
+                    // Xóa ảnh cũ (nếu có)
+                    if (!string.IsNullOrEmpty(oldFileName))
+                    {
+                        var oldFilePath = Server.MapPath("/Images/imgMenu/" + oldFileName);
+                        if (System.IO.File.Exists(oldFilePath))
+                        {
+                            System.IO.File.Delete(oldFilePath);
+                        }
+                    }
+
+                    mENU.ANH = postedFileName; // Cập nhật ANH với tên file mới
+                }
+            }
+
             if (ModelState.IsValid)
             {
-                db.Entry(mENU).State = EntityState.Modified;
+                // Gán lại các thuộc tính thay đổi cho đối tượng trong database context
+                menuToUpdate.TENMH = mENU.TENMH;
+                menuToUpdate.GIACA = mENU.GIACA;
+                menuToUpdate.DVT = mENU.DVT;
+                menuToUpdate.SOLUONGHANG = mENU.SOLUONGHANG;
+                if (!string.IsNullOrEmpty(mENU.ANH))
+                {
+                    menuToUpdate.ANH = mENU.ANH;
+                }
+
+                db.Entry(menuToUpdate).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -120,29 +159,23 @@ namespace CafeGocNho_63134417.Controllers
             return View(mENU);
         }
 
-        // GET: MENUs_63134417/Delete/5
-        public ActionResult Delete(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            MENU mENU = db.MENU.Find(id);
-            if (mENU == null)
-            {
-                return HttpNotFound();
-            }
-            return View(mENU);
-        }
-
         // POST: MENUs_63134417/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        [HttpPost]
+        public ActionResult DeleteConfirmed(string MAMH)
         {
-            MENU mENU = db.MENU.Find(id);
-            db.MENU.Remove(mENU);
-            db.SaveChanges();
+            // Tìm bản ghi trong MENU theo MAMH
+            MENU mENU = db.MENU.Find(MAMH);
+            if (mENU != null)
+            {
+                // Cập nhật trường TRANGTHAI_XOA thành 1
+                mENU.TRANGTHAI_XOA = 1;
+
+                // Lưu thay đổi vào cơ sở dữ liệu
+                db.SaveChanges();
+            }
+
+            Session["Notification"] = "Xóa thành công";
+
             return RedirectToAction("Index");
         }
 

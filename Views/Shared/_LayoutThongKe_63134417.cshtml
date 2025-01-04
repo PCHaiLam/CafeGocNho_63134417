@@ -1,71 +1,100 @@
-﻿<!DOCTYPE html>
-
+﻿@*kiểm tra phân quyền*@
+@if (Session["Role"] == null )
+{
+    Response.Redirect("~/CHUCVUs_63134417/DangNhap");
+}
+<!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>@ViewBag.Title</title>
     <link rel="icon" type="image/x-icon" href="/Images/logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <script src="https://unpkg.com/flowbite@0.0.1/dist/datepicker.js"></script>
 </head>
-<body class="bg-gray-100 flex flex-col max-h-screen">
-    <nav class="bg-black bg-opacity-70 text-white h-20">
-        <div class="container mx-auto flex items-center justify-between h-full">
-            <ul class="flex w-1/2 justify-between">
-                <li class="py-2">
-                    @Html.ActionLink("Tổng quan", "TongQuanHoaDon_63134417", "HOADONs_63134417", new { tableId = ViewBag.TableId }, new { @class = "hover:text-yellow-500" })
-                </li>
-                <li class="py-2">
-                    @Html.ActionLink("Hóa Đơn", "ThongKeHoaDon_63134417", "HOADONs_63134417", new { tableId = ViewBag.TableId }, new { @class = "hover:text-yellow-500" })
-                </li>
-                <li class="py-2">
-                    @Html.ActionLink("Hàng hóa", "Index", "MENUs_63134417", new { tableId = ViewBag.TableId }, new { @class = "hover:text-yellow-500" })
-                </li>
-                <li class="py-2">
-                    @Html.ActionLink("Bàn", "ThongKeBan_63134417", "BANs_63134417", new { tableId = ViewBag.TableId }, new { @class = "hover:text-yellow-500" })
-                </li>
-                <li class="py-2">
-                    @Html.ActionLink("Nhân Viên", "ThongKeNhanVien_63134417", "NHANVIENs_63134417", new { tableId = ViewBag.TableId }, new { @class = "hover:text-yellow-500" })
-                </li>
-            </ul>
-            <div class="flex space-x-4 items-center">
-                @if (Session["Role"] != null && Session["Role"].ToString() != "Unknown")
-                {
-                    <span>Account: @Session["Ten"]</span>
 
-                    <div class="relative">
-                        <button onclick="toggleDropdown()" class="hover:text-yellow-500 focus:outline-none">
-                            <i class="fa fa-caret-down"></i>
-                        </button>
-                        <div id="dropdownMenu" class="absolute right-0 z-50 mt-2 w-48 bg-white border rounded shadow-md hidden">
-                            @if (Session["Role"].ToString() == "Quản lý")
+<body class="bg-gray-100 flex flex-col min-h-screen">
+    <nav class="bg-black bg-opacity-70 text-white h-20 relative">
+        <div class="mx-4 md:mx-10 lg:mx-32 flex items-center justify-between h-full">
+            <div class="flex items-center justify-between w-full">
+                <div class="flex items-center">
+                    <button class="mobile-menu-toggle hidden mr-4" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                    <ul class="flex md:flex-row flex-grow gap-3 md:gap-5">
+                        @if (Session["Role"].ToString() == "manager" || Session["Role"].ToString() == "admin")
+                        {
+                            <li class="py-2">
+                                @Html.ActionLink("Tổng quan", "TongQuanHoaDon_63134417", "HOADONs_63134417", new { tableId = ViewBag.TableId }, new { @class = "hover:text-yellow-500 block" })
+                            </li>
+                            <li class="py-2">
+                                @Html.ActionLink("Hóa Đơn", "ThongKeHoaDon_63134417", "HOADONs_63134417", new { tableId = ViewBag.TableId }, new { @class = "hover:text-yellow-500 block" })
+                            </li>
+                            if (Session["Role"].ToString() == "admin")
                             {
-                                <a href="@Url.Action("Index", "BANs_63134417")" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">
-                                    Bàn
-                                </a>
+                                <li class="py-2">
+                                    @Html.ActionLink("Hàng hóa", "Index", "MENUs_63134417", new { tableId = ViewBag.TableId }, new { @class = "hover:text-yellow-500 block" })
+                                </li>
+                                <li class="py-2">
+                                    @Html.ActionLink("Bàn", "ThongKeBan_63134417", "BANs_63134417", new { tableId = ViewBag.TableId }, new { @class = "hover:text-yellow-500 block" })
+                                </li>
+                                <li class="py-2">
+                                    @Html.ActionLink("Nhân Viên", "Index", "NHANVIENs_63134417", new { tableId = ViewBag.TableId }, new { @class = "hover:text-yellow-500 block" })
+                                </li>
                             }
-                            <a href="@Url.Action("DangXuat", "PhanQuyen_63134417")" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">
-                                Đăng xuất
-                            </a>
+                        }
+                    </ul>
+                </div>
+                <div class="flex space-x-2 md:space-x-4 items-center">
+                    @if (Session["Role"] != null && Session["Role"].ToString() != "Unknown")
+                    {
+                        <span class="hidden md:inline">Account: @Session["Ten"]</span>
+
+                        <div class="relative">
+                            <button onclick="toggleDropdown()" class="hover:text-yellow-500 focus:outline-none">
+                                <i class="fa fa-caret-down"></i>
+                            </button>
+                            <div id="dropdownMenu" class="absolute right-0 z-50 mt-2 w-48 bg-white border rounded shadow-md hidden">
+                                @if (Session["Role"].ToString() == "admin" || Session["Role"].ToString() == "manager")
+                                {
+                                    <a href="@Url.Action("Index", "BANs_63134417")" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                                        Bàn
+                                    </a>
+                                }
+                                <a href="@Url.Action("DangXuat", "CHUCVUs_63134417")" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                                    Đăng xuất
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                }
-                else
-                {
-                    <a href="@Url.Action("DangNhap", "PhanQuyen_63134417")" class="hover:text-yellow-500 mt-1">Đăng nhập</a>
-                }
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("DangNhap", "CHUCVUs_63134417")" class="hover:text-yellow-500 mt-1">Đăng nhập</a>
+                    }
+                </div>
             </div>
         </div>
         <hr class="border-t border-gray-700">
     </nav>
-    <div class="mx-28 py-2 mb-4">
-            @RenderBody()
+
+    <div class="mx-4 md:mx-10 lg:mx-20 my-5 min-h-[599px] flex-grow">
+        @RenderBody()
+
+        @if (Session["Notification"] != null)
+        {
+            <div id="notification" class="fixed top-4 right-4 bg-green-500 text-white text-sm px-4 py-3 rounded shadow-lg flex items-center justify-between" onclick="closeNotification()">
+                <span>@Session["Notification"]</span>
+            </div>
+            Session.Remove("Notification");
+        }
     </div>
-    <footer class="fixed bottom-0 w-full bg-black bg-opacity-70 text-white flex justify-around h-6">
-        <div>
+
+    <footer class="w-full bg-black bg-opacity-70 text-white flex justify-around h-auto py-2">
+        <div class="text-center w-full">
             &copy; @DateTime.Now.Year - Goc Nho Coffee
-            <a href="https://github.com/PCHaiLam/CafeGocNho_63134417" target="_blank" class="hover:text-yellow-500">
+            <a href="https://github.com/PCHaiLam/CafeGocNho_63134417" target="_blank" class="hover:text-yellow-500 ml-2 inline-block">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 0C5.38 0 0 5.38 0 12c0 5.32 3.49 9.8 8.18 11.27.6.1.82-.27.82-.6v-2.2c-3.34.73-4.03-1.4-4.03-1.4-.55-1.4-1.35-1.77-1.35-1.77-1.1-.82.08-.82.08-.82 1.2.08 1.82 1.23 1.82 1.23 1.07 1.8 2.8 1.23 3.5.96.1-.82.43-1.4.82-1.73-2.7-.27-5.57-1.35-5.57-6.03 0-1.4.48-2.5 1.27-3.41-.2-.3-.55-1.4.1-2.9 0 0 1.08-.34 3.57 1.27.97-.27 2.03-.4 3.1-.4 1.07 0 2.1.13 3.1.4 2.47-1.67 3.56-1.27 3.56-1.27.66 1.5.3 2.6.1 2.9.8.9 1.27 2 1.27 3.41 0 4.67-2.87 5.76-5.6 6.03.43.35.83 1 .83 2.03v3c0 .34.2.7.82.6C20.51 21.8 24 17.32 24 12 24 5.38 18.62 0 12 0z" />
                 </svg>
@@ -75,10 +104,16 @@
 </body>
 </html>
 <script>
+    function toggleMobileMenu() {
+        const mobileMenu = document.querySelector('.nav-menu');
+        mobileMenu.classList.toggle('active');
+    }
+
     function toggleDropdown() {
         const dropdown = document.getElementById("dropdownMenu");
         dropdown.classList.toggle("hidden");
     }
+
     document.addEventListener("click", function (event) {
         const dropdown = document.getElementById("dropdownMenu");
         const button = event.target.closest("button");
@@ -86,17 +121,21 @@
         if (!dropdown.contains(event.target) && !button) {
             dropdown.classList.add("hidden");
         }
+
+        // 
+        const mobileMenu = document.querySelector('.nav-menu');
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        if (!mobileMenu.contains(event.target) && !mobileMenuToggle.contains(event.target)) {
+            mobileMenu.classList.remove('active');
+        }
     });
 
-    function hideDateInput() {
-        const dateInput = document.getElementById("customDate");
-        dateInput.classList.remove("block");
-        dateInput.classList.add("hidden");
+    //thông báo trả về
+    function closeNotification() {
+        const notification = document.getElementById('notification');
+        if (notification) {
+            notification.remove();
+        }
     }
-
-    function showDateInput() {
-        const dateInput = document.getElementById("customDate");
-        dateInput.classList.remove("hidden");
-        dateInput.classList.add("block");
-    }
+    setTimeout(closeNotification, 3000);
 </script>

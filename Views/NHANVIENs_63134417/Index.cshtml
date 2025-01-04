@@ -1,88 +1,62 @@
 ﻿@model IEnumerable<CafeGocNho_63134417.Models.NHANVIEN>
 
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Danh sách nhân viên";
+    Layout = "~/Views/Shared/_LayoutThongKe_63134417.cshtml";
 
-    //kiểm tra phân quyền
-    if (Session["Role"] == null || Session["Role"].ToString() == "Unknown")
-    {
-        Response.Redirect("~/PhanQuyen_63134417/DangNhap");
-    }
+    var grid = new WebGrid(source: Model, canPage: true, canSort: true, rowsPerPage: 10);
 }
 
-<h2>Index</h2>
+<div class="min-h-screen">
+    <h2 class="text-2xl font-bold text-center my-4 text-gray-800">Danh sách nhân viên</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.HONV)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TENNV)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EMAIL)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DIACHI)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MATKHAU)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CHUCVU)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.GIOITINH)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SDT)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CCCD)
-        </th>
-        <th></th>
-    </tr>
+    <p class="mb-4 text-right">
+        <a href="@Url.Action("Create", "NHANVIENs_63134417")" class="px-4 py-2 bg-yellow-400 rounded-md shadow-md hover:bg-yellow-500 transition duration-300">
+            <i class="fas fa-plus-circle mr-2"></i>Thêm nhân viên
+        </a>
+    </p>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.HONV)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TENNV)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EMAIL)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DIACHI)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MATKHAU)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CHUCVU)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GIOITINH)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SDT)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CCCD)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.MANV }) |
-            @Html.ActionLink("Details", "Details", new { id=item.MANV }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.MANV })
-        </td>
-    </tr>
-}
-
-</table>
+    @grid.GetHtml(
+        tableStyle: "w-full border-collapse border border-gray-300 rounded-lg shadow-md",
+        headerStyle: "bg-yellow-400 opacity-70 font-bold py-2 px-4",
+        alternatingRowStyle: "bg-gray-100",
+        rowStyle: "hover:bg-gray-300 bg-gray-200 transition duration-200 border border-gray-300",
+        footerStyle: "font-bold text-center footer-style",
+fillEmptyRows: true,
+mode: WebGridPagerModes.All,
+firstText: "<< First",
+previousText: "< Prev",
+nextText: "Next >",
+lastText: "Last >>",
+        columns: new[]
+        {
+            grid.Column("STT", "STT", format: item => grid.Rows.IndexOf(item) + 1, style: "py-2 px-4 text-center"),
+            grid.Column("HONV", "Họ", style: "py-2 px-4"),
+            grid.Column("TENNV", "Tên", style: "py-2 px-4"),
+            grid.Column("EMAIL", "Email", style: "py-2 px-4"),
+            grid.Column("DIACHI", "Địa chỉ", style: "py-2 px-4"),
+            grid.Column("GIOITINH", "Giới tính", format: item => (item.GIOITINH == 1 ? "Nam" : "Nữ"), style: "py-2 px-4 text-center"),
+            grid.Column("SDT", "SĐT", style: "py-2 px-4"),
+            grid.Column("CCCD", "CCCD", style: "py-2 px-4"),
+            grid.Column("CHUCVU.TENCV", "Chức vụ", format: item => item.CHUCVU?.TENCV ?? "", style: "py-2 px-4 text-center"),
+            grid.Column(header: "",
+                format: @<text>
+                    <div class="flex justify-center space-x-2">
+                        @if (item.CHUCVU?.MACV.ToLower() == "admin")
+            {
+                        <span class="text-gray-400 cursor-not-allowed" title="Không thể thao tác với Admin">
+                            <i class="fas fa-info-circle"></i>
+                        </span>
+            }
+            else
+            {
+                        <a href="@Url.Action("Edit", "NHANVIENs_63134417", new { id = item.MANV })" class="text-green-600 hover:text-green-800 transition duration-300">
+                            <i class="fas fa-info-circle"></i>
+                        </a>
+            }
+                    </div>
+                </text>,
+         style: "py-2 px-4 text-center")
+ }
+)
+</div>

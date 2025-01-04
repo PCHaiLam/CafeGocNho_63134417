@@ -4,19 +4,25 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5eba618ccbad4fb4ab0230e3ad04649a" Name="Diagram1" ZoomLevel="85">
+      <Diagram DiagramId="5eba618ccbad4fb4ab0230e3ad04649a" Name="Diagram1" ZoomLevel="80">
         <EntityTypeShape EntityType="CafeGocNho_63134417Model.BAN" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="CafeGocNho_63134417Model.CHITIETHOADON" Width="1.625" PointX="5.25" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CafeGocNho_63134417Model.CHITIETHOADON" Width="1.625" PointX="5.25" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="CafeGocNho_63134417Model.HOADON" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="CafeGocNho_63134417Model.LOAIMATHANG" Width="1.5" PointX="7.75" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CafeGocNho_63134417Model.LOAIMATHANG" Width="1.5" PointX="9.625" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="CafeGocNho_63134417Model.MENU" Width="1.5" PointX="7.75" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CafeGocNho_63134417Model.NHANVIEN" Width="1.5" PointX="5.375" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CafeGocNho_63134417Model.NHANVIEN" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
         <AssociationConnector Association="CafeGocNho_63134417Model.FK_HOADON_BAN_PHIEU_BAN" ManuallyRouted="false" />
         <AssociationConnector Association="CafeGocNho_63134417Model.FK_CHITIETH_CHI_TIET__MENU" ManuallyRouted="false" />
         <AssociationConnector Association="CafeGocNho_63134417Model.FK_CHITIETH_PHIEU_XUA_HOADON" ManuallyRouted="false" />
-        <AssociationConnector Association="CafeGocNho_63134417Model.FK_HOADON_NHAN_VIEN_NHANVIEN" ManuallyRouted="false" />
+        <AssociationConnector Association="CafeGocNho_63134417Model.FK_HOADON_NHAN_VIEN_NHANVIEN" ManuallyRouted="false" ></AssociationConnector>
         <AssociationConnector Association="CafeGocNho_63134417Model.FK_MENU_REFERENCE_LOAIMATH" ManuallyRouted="false" />
         <AssociationConnector Association="CafeGocNho_63134417Model.FK_HOADON_NHANVIEN_THANHTOAN" />
+        <EntityTypeShape EntityType="CafeGocNho_63134417Model.CHUCVU" Width="1.5" PointX="5.25" PointY="5.875" />
+        <EntityTypeShape EntityType="CafeGocNho_63134417Model.CHUCVU_QUYEN" Width="1.5" PointX="7.875" PointY="6" />
+        <EntityTypeShape EntityType="CafeGocNho_63134417Model.QUYEN" Width="1.5" PointX="10.125" PointY="6.25" />
+        <AssociationConnector Association="CafeGocNho_63134417Model.FK_CHUCVU_QUYEN_CHUCVU" />
+        <AssociationConnector Association="CafeGocNho_63134417Model.FK_NHANVIEN_CHUCVU" />
+        <AssociationConnector Association="CafeGocNho_63134417Model.FK_CHUCVU_QUYEN_QUYEN" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

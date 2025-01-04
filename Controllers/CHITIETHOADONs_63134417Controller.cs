@@ -17,36 +17,53 @@ namespace CafeGocNho_63134417.Controllers
         private CafeGocNho_63134417Entities db = new CafeGocNho_63134417Entities();
 
         // GET: CHITIETHOADONs_63134417
-        public ActionResult Index(string billId = null, string tableId = null, int discount = 0)
+        public ActionResult Index(string MAHD)
         {
-            var cthd = db.CHITIETHOADON
-                        .Where(c => c.HOADON.MAHD == billId)
-                        .Include(c => c.MENU)
-                        .Include(c => c.HOADON)
-                        .GroupBy(c => new { c.MAMH }) 
-                        .ToList();
+            var hoaDon = db.HOADON.FirstOrDefault(h => h.MAHD == MAHD);
+            ViewBag.CheckExist = hoaDon;
 
-            var hoaDon = db.HOADON.FirstOrDefault(h => h.MAHD == billId && h.MABAN.ToString() == tableId);
+            var cthd = db.CHITIETHOADON.Where(c => c.MAHD == MAHD); 
 
-            int total = (int)hoaDon.CHITIETHOADON.Sum(h => h.SOLUONG * h.MENU.GIACA); 
+            int total =  (int)cthd.Sum(c => c.SOLUONG * c.MENU.GIACA);
 
-            decimal discountAmount = total * (discount / 100.0m);
+            decimal discountAmount = (decimal)(total * (hoaDon.GIAMGIA / 100.0m));
             decimal afterDiscount = total - discountAmount;
 
             ViewBag.total = total.ToString("N0");           
-            ViewBag.discount = discount;                    
+            ViewBag.discount = hoaDon.GIAMGIA;                    
             ViewBag.discountAmount = discountAmount.ToString("N0");
             ViewBag.afterDiscount = afterDiscount.ToString("N0");
 
-            ViewBag.billId = billId;
-            ViewBag.tableId = tableId;
+            ViewBag.MAHD = hoaDon.MAHD;
+            ViewBag.tableId = hoaDon.MABAN;
+            ViewBag.maNV = hoaDon.NHANVIEN.TENNV;
+            ViewBag.thoiGianNhanDon = hoaDon.THOIGIAN_NHANDON;
 
-            return View(db.CHITIETHOADON.ToList());
-
+            return View(cthd);
         }
         //Chi tiết hóa đơn
-        public ActionResult ChiTiet_63134417(string billId)
+        public ActionResult ChiTiet_63134417(string id)
         {
+            var cthd = db.CHITIETHOADON.Where(h => h.MAHD == id).ToList();
+            var hoaDon = db.HOADON.FirstOrDefault(h => h.MAHD == id);
+
+            string tenNhanVienNhanDon = null;
+            string tenNhanVienThanhToan = null;
+
+            if (hoaDon != null)
+            {
+                var nhanVienNhanDon = db.NHANVIEN.FirstOrDefault(nv => nv.MANV == hoaDon.MANV);
+                tenNhanVienNhanDon = nhanVienNhanDon?.TENNV;
+
+                var nhanVienThanhToan = db.NHANVIEN.FirstOrDefault(nv => nv.MANV == hoaDon.NV_THANHTOAN);
+                tenNhanVienThanhToan = nhanVienThanhToan?.TENNV;
+            }
+
+            ViewBag.CTHD = cthd;
+            ViewBag.HoaDon = hoaDon;
+            ViewBag.NV_NhanDon = tenNhanVienNhanDon;
+            ViewBag.NV_ThanhToan = tenNhanVienThanhToan;
+
             return View();
         }
         // GET: CHITIETHOADONs_63134417/Details/5

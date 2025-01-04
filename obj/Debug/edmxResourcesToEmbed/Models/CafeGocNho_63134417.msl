@@ -12,6 +12,8 @@
     <EntitySetMapping Name="CHITIETHOADON">
       <EntityTypeMapping TypeName="CafeGocNho_63134417Model.CHITIETHOADON">
         <MappingFragment StoreEntitySet="CHITIETHOADON">
+          <ScalarProperty Name="GHICHU" ColumnName="GHICHU" />
+          <ScalarProperty Name="GIAMGIA" ColumnName="GIAMGIA" />
           <ScalarProperty Name="GIABAN" ColumnName="GIABAN" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="MAHD" ColumnName="MAHD" />
@@ -23,6 +25,7 @@
     <EntitySetMapping Name="HOADON">
       <EntityTypeMapping TypeName="CafeGocNho_63134417Model.HOADON">
         <MappingFragment StoreEntitySet="HOADON">
+          <ScalarProperty Name="GHICHUHOADON" ColumnName="GHICHUHOADON" />
           <ScalarProperty Name="THOIGIAN_THANHTOAN" ColumnName="THOIGIAN_THANHTOAN" />
           <ScalarProperty Name="THOIGIAN_NHANDON" ColumnName="THOIGIAN_NHANDON" />
           <ScalarProperty Name="TRANGTHAI_XOA" ColumnName="TRANGTHAI_XOA" />
@@ -60,19 +63,43 @@
     <EntitySetMapping Name="NHANVIEN">
       <EntityTypeMapping TypeName="CafeGocNho_63134417Model.NHANVIEN">
         <MappingFragment StoreEntitySet="NHANVIEN">
+          <ScalarProperty Name="MACV" ColumnName="MACV" />
           <ScalarProperty Name="MANV" ColumnName="MANV" />
           <ScalarProperty Name="HONV" ColumnName="HONV" />
           <ScalarProperty Name="TENNV" ColumnName="TENNV" />
           <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
           <ScalarProperty Name="DIACHI" ColumnName="DIACHI" />
           <ScalarProperty Name="MATKHAU" ColumnName="MATKHAU" />
-          <ScalarProperty Name="CHUCVU" ColumnName="CHUCVU" />
           <ScalarProperty Name="GIOITINH" ColumnName="GIOITINH" />
           <ScalarProperty Name="SDT" ColumnName="SDT" />
           <ScalarProperty Name="CCCD" ColumnName="CCCD" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="Menu_TimKiem" FunctionName="CafeGocNho_63134417Model.Store.Menu_TimKiem" />
+    <EntitySetMapping Name="CHUCVU">
+      <EntityTypeMapping TypeName="CafeGocNho_63134417Model.CHUCVU">
+        <MappingFragment StoreEntitySet="CHUCVU">
+          <ScalarProperty Name="TENCV" ColumnName="TENCV" />
+          <ScalarProperty Name="MACV" ColumnName="MACV" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CHUCVU_QUYEN">
+      <EntityTypeMapping TypeName="CafeGocNho_63134417Model.CHUCVU_QUYEN">
+        <MappingFragment StoreEntitySet="CHUCVU_QUYEN">
+          <ScalarProperty Name="MAQUYEN" ColumnName="MAQUYEN" />
+          <ScalarProperty Name="MACV" ColumnName="MACV" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QUYEN">
+      <EntityTypeMapping TypeName="CafeGocNho_63134417Model.QUYEN">
+        <MappingFragment StoreEntitySet="QUYEN">
+          <ScalarProperty Name="TENQUYEN" ColumnName="TENQUYEN" />
+          <ScalarProperty Name="MAQUYEN" ColumnName="MAQUYEN" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

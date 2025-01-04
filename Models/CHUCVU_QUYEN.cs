@@ -12,17 +12,13 @@ namespace CafeGocNho_63134417.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class CHITIETHOADON
+    public partial class CHUCVU_QUYEN
     {
-        public string MAHD { get; set; }
-        public string MAMH { get; set; }
-        public Nullable<int> SOLUONG { get; set; }
         public int id { get; set; }
-        public Nullable<int> GIABAN { get; set; }
-        public Nullable<int> GIAMGIA { get; set; }
-        public string GHICHU { get; set; }
+        public string MACV { get; set; }
+        public string MAQUYEN { get; set; }
     
-        public virtual MENU MENU { get; set; }
-        public virtual HOADON HOADON { get; set; }
+        public virtual CHUCVU CHUCVU { get; set; }
+        public virtual QUYEN QUYEN { get; set; }
     }
 }

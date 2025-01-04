@@ -8,59 +8,101 @@
     //kiểm tra phân quyền
     if (Session["Role"] == null || Session["Role"].ToString() == "Unknown")
     {
-        Response.Redirect("~/PhanQuyen_63134417/DangNhap");
+        Response.Redirect("~/CHUCVUs_63134417/DangNhap");
     }
 }
-    <!-- Cột Danh Sách Bàn -->
-    <div class="flex flex-col w-full h-[536px]">
-                <form id="filterForm" method="get">
-                    <label>
-                        <input type="radio" name="filter" value="all" onchange="document.getElementById('filterForm').submit();" @(ViewBag.Filter == "all" ? "checked" : "")>
-                        Tất cả
-                    </label>
-                    <label>
-                        <input type="radio" name="filter" value="available" onchange="document.getElementById('filterForm').submit();" @(ViewBag.Filter == "available" ? "checked" : "")>
-                        Bàn trống
-                    </label>
-                    <label>
-                        <input type="radio" name="filter" value="occupied" onchange="document.getElementById('filterForm').submit();" @(ViewBag.Filter == "occupied" ? "checked" : "")>
-                        Đang sử dụng
-                    </label>
-                </form>
 
-        <div class="h-full">
-            <ul id="tableList" class="grid grid-cols-6">
-
-                @foreach (var item in Model)
-                {
-                    <li class="rounded-lg shadow-lg p-4 h-28 m-2 @(item.TINHTRANG == 1 ? "bg-yellow-400 opacity-90" : "white")">
-                        <a href="@Url.Action("Index", "HOADONs_63134417", new { tableId = item.MABAN })"
-                           class=" cursor-pointer">
-                            <div class="bg-gray-200 text-gray-800 text-sm font-semibold px-2 py-1 rounded">
-                                Bàn: @item.MABAN
-                            </div>
-                        </a>
-                    </li>
-                }
-                @ViewBag.NoTable
-            </ul>
-        </div>
+<div class="container mx-auto px-4 py-6">
+    <!-- Filter Section -->
+    <div class="mb-6">
+        <form id="filterForm" method="get" class="flex gap-5">
+            <label class="items-center">
+                <input type="radio" name="filter" value="all"
+                       class="form-radio"
+                       onchange="document.getElementById('filterForm').submit();"@(ViewBag.Filter == "all" ? "checked" : "")>
+                <span class="ml-2">Tất cả</span>
+            </label>
+            <label class="items-center">
+                <input type="radio" name="filter" value="available"
+                       class="form-radio"
+                       onchange="document.getElementById('filterForm').submit();"@(ViewBag.Filter == "available" ? "checked" : "")>
+                <span class="ml-2">Bàn trống</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="radio" name="filter" value="occupied"
+                       class="form-radio"
+                       onchange="document.getElementById('filterForm').submit();"@(ViewBag.Filter == "occupied" ? "checked" : "")>
+                <span class="ml-2">Đang sử dụng</span>
+            </label>
+        </form>
     </div>
-    <div class="mt-4 flex justify-center text-black">
-        <!-- Luôn hiển thị phím điều hướng Previous -->
-        <a href="?page=@(ViewBag.CurrentPage > 1 ? ViewBag.CurrentPage - 1 : 1)" class="px-2 border rounded @(ViewBag.CurrentPage > 1 ? "" : "disabled-link")">Previous</a>
 
-        @if (ViewBag.TotalPages > 0)
-        {
-            for (int i = 1; i <= ViewBag.TotalPages; i++)
+    <!-- Table List Section -->
+    <div class="w-full h-[500px] overflow-x-auto">
+        <ul id="tableList" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            @foreach (var item in Model)
             {
-                <a href="?page=@i" class="px-2 border rounded @(i == ViewBag.CurrentPage ? "font-bold" : "")">@i</a>
+                <li class="rounded-lg shadow-lg p-4 h-28 @(item.TINHTRANG == 1 ? "bg-yellow-400 opacity-90" : "bg-white")">
+                    <a href="@Url.Action("Index", "HOADONs_63134417", new { tableId = item.MABAN })"
+                       class="cursor-pointer block h-full">
+                        <div class="bg-gray-200 text-gray-800 text-sm font-semibold px-2 py-1 rounded text-center">
+                            Bàn: @item.MABAN
+                        </div>
+                    </a>
+                </li>
             }
-        }
-        else
-        {
-            <p>Không có bàn nào để hiển thị.</p>
-        }
-        <!-- Luôn hiển thị phím điều hướng Next -->
-        <a href="?page=@(ViewBag.CurrentPage < ViewBag.TotalPages ? ViewBag.CurrentPage + 1 : ViewBag.TotalPages)" class="px-2 border rounded @(ViewBag.CurrentPage < ViewBag.TotalPages ? "" : "disabled-link")">Next</a>
+            @ViewBag.NoTable
+        </ul>
     </div>
+
+    <!-- Pagination Section -->
+    <div class="mt-6 flex flex-wrap justify-center items-center space-x-2">
+        <!-- Previous Page -->
+        <a href="?page=@(ViewBag.CurrentPage > 1 ? ViewBag.CurrentPage - 1 : 1)"
+           class="px-3 py-2 border rounded @(ViewBag.CurrentPage > 1 ? "hover:bg-yellow-100" : "opacity-50 cursor-not-allowed")">
+            Previous
+        </a>
+
+        <!-- Page Numbers -->
+        <div class="flex space-x-1">
+            @if (ViewBag.TotalPages > 0)
+            {
+                for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <a href="?page=@i"
+                       class="px-3 py-2 border rounded @(i == ViewBag.CurrentPage ? "bg-yellow-500 text-white" : "")">
+                        @i
+                    </a>
+                }
+            }
+            else
+            {
+                <p class="text-center w-full">Không có bàn nào để hiển thị.</p>
+            }
+        </div>
+
+        <!-- Next Page -->
+        <a href="?page=@(ViewBag.CurrentPage < ViewBag.TotalPages ? ViewBag.CurrentPage + 1 : ViewBag.TotalPages)"
+           class="px-3 py-2 border rounded @(ViewBag.CurrentPage < ViewBag.TotalPages ? "hover:bg-gray-100" : "opacity-50 cursor-not-allowed")">
+            Next
+        </a>
+    </div>
+</div>
+
+<style>
+    /* Additional responsive tweaks */
+    @@media (max-width: 640px) {
+        #tableList {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .pagination {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .pagination a {
+            margin: 0.25rem 0;
+        }
+    }
+</style>

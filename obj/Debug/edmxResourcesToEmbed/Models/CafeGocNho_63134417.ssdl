@@ -4,7 +4,7 @@
     <Key>
       <PropertyRef Name="MABAN" />
     </Key>
-    <Property Name="MABAN" Type="int" Nullable="false" />
+    <Property Name="MABAN" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="TINHTRANG" Type="smallint" />
   </EntityType>
   <EntityType Name="CHITIETHOADON">
@@ -16,6 +16,23 @@
     <Property Name="MAMH" Type="varchar" MaxLength="10" Nullable="false" />
     <Property Name="SOLUONG" Type="int" />
     <Property Name="GIABAN" Type="int" />
+    <Property Name="GIAMGIA" Type="int" />
+    <Property Name="GHICHU" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="CHUCVU">
+    <Key>
+      <PropertyRef Name="MACV" />
+    </Key>
+    <Property Name="MACV" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="TENCV" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="CHUCVU_QUYEN">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MACV" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="MAQUYEN" Type="nvarchar" MaxLength="30" Nullable="false" />
   </EntityType>
   <EntityType Name="HOADON">
     <Key>
@@ -25,11 +42,12 @@
     <Property Name="MABAN" Type="int" />
     <Property Name="MANV" Type="varchar" MaxLength="10" />
     <Property Name="THOIGIAN_NHANDON" Type="datetime" />
-    <Property Name="THOIGIAN_THANHTOAN" Type="date" />
+    <Property Name="THOIGIAN_THANHTOAN" Type="datetime" />
     <Property Name="THANHTOAN" Type="smallint" />
     <Property Name="GIAMGIA" Type="int" />
     <Property Name="NV_THANHTOAN" Type="varchar" MaxLength="10" />
     <Property Name="TRANGTHAI_XOA" Type="smallint" />
+    <Property Name="GHICHUHOADON" Type="nvarchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="LOAIMATHANG">
     <Key>
@@ -60,11 +78,18 @@
     <Property Name="TENNV" Type="nvarchar" MaxLength="10" />
     <Property Name="EMAIL" Type="varchar" MaxLength="50" />
     <Property Name="DIACHI" Type="nvarchar" MaxLength="200" />
-    <Property Name="MATKHAU" Type="varchar" MaxLength="50" />
-    <Property Name="CHUCVU" Type="smallint" />
+    <Property Name="MATKHAU" Type="varchar" MaxLength="255" />
+    <Property Name="MACV" Type="nvarchar" MaxLength="20" />
     <Property Name="GIOITINH" Type="smallint" />
-    <Property Name="SDT" Type="varchar" MaxLength="15" />
-    <Property Name="CCCD" Type="varchar" MaxLength="12" />
+    <Property Name="SDT" Type="varchar" MaxLength="12" />
+    <Property Name="CCCD" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="QUYEN">
+    <Key>
+      <PropertyRef Name="MAQUYEN" />
+    </Key>
+    <Property Name="MAQUYEN" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="TENQUYEN" Type="nvarchar" MaxLength="100" />
   </EntityType>
   <Association Name="FK_CHITIETH_CHI_TIET__MENU">
     <End Role="MENU" Type="Self.MENU" Multiplicity="1" />
@@ -87,6 +112,30 @@
       </Principal>
       <Dependent Role="CHITIETHOADON">
         <PropertyRef Name="MAHD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CHUCVU_QUYEN_CHUCVU">
+    <End Role="CHUCVU" Type="Self.CHUCVU" Multiplicity="1" />
+    <End Role="CHUCVU_QUYEN" Type="Self.CHUCVU_QUYEN" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CHUCVU">
+        <PropertyRef Name="MACV" />
+      </Principal>
+      <Dependent Role="CHUCVU_QUYEN">
+        <PropertyRef Name="MACV" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CHUCVU_QUYEN_QUYEN">
+    <End Role="QUYEN" Type="Self.QUYEN" Multiplicity="1" />
+    <End Role="CHUCVU_QUYEN" Type="Self.CHUCVU_QUYEN" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="QUYEN">
+        <PropertyRef Name="MAQUYEN" />
+      </Principal>
+      <Dependent Role="CHUCVU_QUYEN">
+        <PropertyRef Name="MAQUYEN" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -138,21 +187,28 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Function Name="Menu_TimKiem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="MAMH" Type="varchar" Mode="In" />
-    <Parameter Name="TENMH" Type="nvarchar" Mode="In" />
-    <Parameter Name="GIACAmin" Type="varchar" Mode="In" />
-    <Parameter Name="GIACAmax" Type="varchar" Mode="In" />
-    <Parameter Name="DVT" Type="varchar" Mode="In" />
-    <Parameter Name="MALOAI" Type="varchar" Mode="In" />
-  </Function>
+  <Association Name="FK_NHANVIEN_CHUCVU">
+    <End Role="CHUCVU" Type="Self.CHUCVU" Multiplicity="0..1" />
+    <End Role="NHANVIEN" Type="Self.NHANVIEN" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CHUCVU">
+        <PropertyRef Name="MACV" />
+      </Principal>
+      <Dependent Role="NHANVIEN">
+        <PropertyRef Name="MACV" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="CafeGocNho_63134417ModelStoreContainer">
     <EntitySet Name="BAN" EntityType="Self.BAN" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CHITIETHOADON" EntityType="Self.CHITIETHOADON" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CHUCVU" EntityType="Self.CHUCVU" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CHUCVU_QUYEN" EntityType="Self.CHUCVU_QUYEN" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="HOADON" EntityType="Self.HOADON" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="LOAIMATHANG" EntityType="Self.LOAIMATHANG" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MENU" EntityType="Self.MENU" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="NHANVIEN" EntityType="Self.NHANVIEN" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QUYEN" EntityType="Self.QUYEN" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_CHITIETH_CHI_TIET__MENU" Association="Self.FK_CHITIETH_CHI_TIET__MENU">
       <End Role="MENU" EntitySet="MENU" />
       <End Role="CHITIETHOADON" EntitySet="CHITIETHOADON" />
@@ -160,6 +216,14 @@
     <AssociationSet Name="FK_CHITIETH_PHIEU_XUA_HOADON" Association="Self.FK_CHITIETH_PHIEU_XUA_HOADON">
       <End Role="HOADON" EntitySet="HOADON" />
       <End Role="CHITIETHOADON" EntitySet="CHITIETHOADON" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CHUCVU_QUYEN_CHUCVU" Association="Self.FK_CHUCVU_QUYEN_CHUCVU">
+      <End Role="CHUCVU" EntitySet="CHUCVU" />
+      <End Role="CHUCVU_QUYEN" EntitySet="CHUCVU_QUYEN" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CHUCVU_QUYEN_QUYEN" Association="Self.FK_CHUCVU_QUYEN_QUYEN">
+      <End Role="QUYEN" EntitySet="QUYEN" />
+      <End Role="CHUCVU_QUYEN" EntitySet="CHUCVU_QUYEN" />
     </AssociationSet>
     <AssociationSet Name="FK_HOADON_BAN_PHIEU_BAN" Association="Self.FK_HOADON_BAN_PHIEU_BAN">
       <End Role="BAN" EntitySet="BAN" />
@@ -176,6 +240,10 @@
     <AssociationSet Name="FK_MENU_REFERENCE_LOAIMATH" Association="Self.FK_MENU_REFERENCE_LOAIMATH">
       <End Role="LOAIMATHANG" EntitySet="LOAIMATHANG" />
       <End Role="MENU" EntitySet="MENU" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NHANVIEN_CHUCVU" Association="Self.FK_NHANVIEN_CHUCVU">
+      <End Role="CHUCVU" EntitySet="CHUCVU" />
+      <End Role="NHANVIEN" EntitySet="NHANVIEN" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

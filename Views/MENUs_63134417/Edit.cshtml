@@ -10,78 +10,127 @@
 </div>
 
 <div class="w-2/3 mx-auto min-h-[450px] bg-white border-2 rounded-xl p-5 mt-4">
-    <h1 class="font-bold">Thông tin hàng hóa</h1>
+    <div></div>
+    <div class="font-bold flex justify-between">
+        <h1>Thông tin hàng hóa</h1>
+        <!-- Nút Xóa -->
+        <button type="button" class="open-modal" title="Xóa">
+            <img src="~/Images/delete.png" width="32" />
+        </button>
+
+        <!-- Modal -->
+        <div id="deleteModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div class="bg-white p-6 rounded shadow-lg max-w-sm w-full">
+                <h2 class="text-lg font-bold mb-4">Xác nhận xóa</h2>
+                <p class="text-sm mb-6">Bạn có chắc chắn muốn xóa mục này không?</p>
+                <div class="flex justify-end space-x-4">
+                    <!-- Nút Hủy -->
+                    <button type="button" id="cancelDelete" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700">Hủy</button>
+                    <!-- Nút Xóa -->
+                    <form id="deleteForm" method="post" action="@Url.Action("DeleteConfirmed", "MENUs_63134417")">
+                        <input type="hidden" name="MAMH" value="@Model.MAMH" />
+                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700">Xóa</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
     <hr class="my-4" />
 
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Edit", "MENUs_63134417", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
 
-<div class="grid grid-cols-2 gap-4 mt-4">
-    <div class="">
-        @Html.LabelFor(model => model.MAMH, "Mã hàng hóa", htmlAttributes: new { @class = "font-bold w-32 text-left" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.MAMH, new { htmlAttributes = new { @class = "bg-gray-200 w-full px-1 py-1 border border-black rounded", @readonly = "@readonly" } })
-            @Html.ValidationMessageFor(model => model.MAMH, "", new { @class = "text-danger" })
+        <div class="grid grid-cols-2 gap-4 mt-4">
+            <div class="">
+                @Html.LabelFor(model => model.MAMH, "Mã hàng hóa", htmlAttributes: new { @class = "font-bold w-32 text-left" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.MAMH, new { htmlAttributes = new { @class = "bg-gray-200 w-full px-1 py-1 border border-black rounded", @readonly = "@readonly" } })
+                    @Html.ValidationMessageFor(model => model.MAMH, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="">
+                @Html.LabelFor(model => model.MALOAI, "Loại", htmlAttributes: new { @class = "font-bold w-32 text-left" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.LOAIMATHANG.TENLOAI, new { htmlAttributes = new { @class = "bg-gray-200 w-full px-1 py-1 border border-black rounded", @readonly = "@readonly" } })
+                    @Html.ValidationMessageFor(model => model.MALOAI, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="">
+                @Html.LabelFor(model => model.TENMH, "Tên hàng", htmlAttributes: new { @class = "font-bold w-32 text-left" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.TENMH, new { htmlAttributes = new { @class = "w-full px-1 py-1 border border-black rounded", @required = "required" } })
+                    @Html.ValidationMessageFor(model => model.TENMH, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="">
+                @Html.LabelFor(model => model.GIACA, "Giá", htmlAttributes: new { @class = "font-bold w-32 text-left" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.GIACA, new { htmlAttributes = new { @class = "w-full px-1 py-1 border border-black rounded", @required = "required", @type = "number", @min = "1", @max = "500000" } })
+                    @Html.ValidationMessageFor(model => model.GIACA, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="">
+                @Html.LabelFor(model => model.SOLUONGHANG, "Số lượng hàng", htmlAttributes: new { @class = "font-bold w-32 text-left" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.SOLUONGHANG, new { htmlAttributes = new { @class = "w-full px-1 py-1 border border-black rounded", @required = "required", @type = "number", @min = "1", @max = "99999" } })
+                    @Html.ValidationMessageFor(model => model.SOLUONGHANG, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="">
+                @Html.LabelFor(model => model.DVT, "Đơn vị tính", htmlAttributes: new { @class = "font-bold w-32 text-left" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DVT, new { htmlAttributes = new { @class = "w-full px-1 py-1 border border-black rounded", @required = "required" } })
+                    @Html.ValidationMessageFor(model => model.DVT, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="">
+                @Html.LabelFor(model => model.ANH, "Ảnh", htmlAttributes: new { @class = "font-bold w-32 text-left" })
+                <div class="col-md-10">
+                    <input type="file" name="Anh" accept="image/*" class="w-full px-1 py-1 border border-black rounded" />
+                    @Html.ValidationMessageFor(model => model.ANH, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="">
+                <img src="@Url.Content("~/Images/imgMenu/" + Model.ANH)" alt="Ảnh" class="w-32 h-32" />
+            </div>
+
+
+            <div class="col-span-2 text-center">
+                <button type="submit" class="px-4 py-1 bg-yellow-400 active:bg-yellow-500 rounded-md hover:bg-yellow-600">Lưu</button>
+            </div>
         </div>
-    </div>
-
-    <div class="">
-        @Html.LabelFor(model => model.MALOAI, "Loại", htmlAttributes: new { @class = "font-bold w-32 text-left" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.LOAIMATHANG.TENLOAI, new { htmlAttributes = new { @class = "bg-gray-200 w-full px-1 py-1 border border-black rounded", @readonly = "@readonly" } })
-            @Html.ValidationMessageFor(model => model.MALOAI, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="">
-        @Html.LabelFor(model => model.TENMH, "Tên hàng", htmlAttributes: new { @class = "font-bold w-32 text-left" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.TENMH, new { htmlAttributes = new { @class = "w-full px-1 py-1 border border-black rounded", @required = "required" } })
-            @Html.ValidationMessageFor(model => model.TENMH, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="">
-        @Html.LabelFor(model => model.GIACA, "Giá", htmlAttributes: new { @class = "font-bold w-32 text-left" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.GIACA, new { htmlAttributes = new { @class = "w-full px-1 py-1 border border-black rounded", @required = "required", @type = "number", @min = "1", @max = "500000" } })
-            @Html.ValidationMessageFor(model => model.GIACA, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="">
-        @Html.LabelFor(model => model.SOLUONGHANG, "Số lượng hàng", htmlAttributes: new { @class = "font-bold w-32 text-left" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.SOLUONGHANG, new { htmlAttributes = new { @class = "w-full px-1 py-1 border border-black rounded", @required = "required", @type = "number", @min = "1", @max = "99999" } })
-            @Html.ValidationMessageFor(model => model.SOLUONGHANG, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="">
-        @Html.LabelFor(model => model.DVT, "Đơn vị tính", htmlAttributes: new { @class = "font-bold w-32 text-left" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.DVT, new { htmlAttributes = new { @class = "w-full px-1 py-1 border border-black rounded", @required = "required" } })
-            @Html.ValidationMessageFor(model => model.DVT, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="">
-        @Html.LabelFor(model => model.ANH, "Ảnh", htmlAttributes: new { @class = "font-bold w-32 text-left" })
-        <div class="col-md-10">
-            <input type="file" name="Avatar" accept="image/*" class="w-full px-1 py-1 border border-black rounded" />
-            @Html.ValidationMessageFor(model => model.ANH, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="">
-        <img src="@Url.Content("~/Images/imgMenu/" + Model.ANH)" alt="Ảnh" class="w-32 h-32" />
-    </div>
-
-
-    <div class="col-span-2 text-center">
-        <button type="submit" class="px-4 py-1 bg-yellow-400 active:bg-yellow-500 rounded-md hover:bg-yellow-600">Lưu</button>
-    </div>
-</div>
     }
 </div>
+
+<script>
+    // Lấy các phần tử
+    const openModalButton = document.querySelector(".open-modal");
+    const modal = document.getElementById("deleteModal");
+    const cancelDeleteButton = document.getElementById("cancelDelete");
+
+    // Khi nhấn nút "Xóa"
+    openModalButton.addEventListener("click", () => {
+        modal.classList.remove("hidden"); // Hiển thị modal
+    });
+
+    // Khi nhấn "Hủy"
+    cancelDeleteButton.addEventListener("click", () => {
+        modal.classList.add("hidden"); // Ẩn modal
+    });
+
+    // Đóng modal khi nhấn bên ngoài
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.classList.add("hidden");
+        }
+    });
+</script>

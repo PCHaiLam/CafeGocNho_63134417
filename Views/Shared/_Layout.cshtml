@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@{
+    //kiểm tra phân quyền
+    if (Session["Role"] == null)
+    {
+        Response.Redirect("~/CHUCVUs_63134417/DangNhap");
+    }
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -10,7 +18,7 @@
 </head>
 <body class="bg-gray-100 flex flex-col">
     <nav class="bg-black bg-opacity-70 text-white h-20">
-        <div class="container mx-auto flex items-center justify-between h-full">
+        <div class="mx-32 flex items-center justify-between h-full">
 
             <div class="flex items-center space-x-8 font-bold">
                 @Html.ActionLink("Bàn", "Index", "BANs_63134417", new { tableId = ViewBag.TableId }, new { @class = "hover:text-yellow-500" })
@@ -33,13 +41,13 @@
                             <i class="fa fa-caret-down"></i>
                         </button>
                         <div id="dropdownMenu" class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-md hidden">
-                            @if (Session["Role"].ToString() == "Quản lý")
+                            @if (Session["Role"].ToString() == "admin" || Session["Role"].ToString() == "manager")
                             {
                                  <a href="@Url.Action("TongQuanHoaDon_63134417", "HOADONs_63134417")" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                                     Quản lý
                                 </a>
                             }
-                            <a href="@Url.Action("DangNhap", "PhanQuyen_63134417")" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                            <a href="@Url.Action("DangNhap", "CHUCVUs_63134417")" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                                 Đăng xuất
                             </a>
                         </div>
@@ -47,18 +55,26 @@
                 }
                 else
                 {
-                    <a href="@Url.Action("DangNhap", "PhanQuyen_63134417")" class="hover:text-yellow-500 mt-1">Đăng nhập</a>
+                    <a href="@Url.Action("DangNhap", "CHUCVUs_63134417")" class="hover:text-yellow-500 mt-1">Đăng nhập</a>
                 }
             </div>
         </div>
         <hr class="border-t border-gray-700">
     </nav>
 
-    <div class="mx-32 gap-4 py-2">
+    <div class="mx-20 my-5 flex-grow">
         @RenderBody()
+
+        @if (Session["Notification"] != null)
+        {
+            <div id="notification" class="fixed top-4 right-4 bg-green-500 text-white text-sm px-4 py-3 rounded shadow-lg flex items-center justify-between" onclick="closeNotification()">
+                <span>@Session["Notification"]</span>
+            </div>
+            Session.Remove("Notification");
+        }
     </div>
 
-    <footer class="fixed bottom-0 w-full bg-black bg-opacity-70 text-white flex justify-around h-6">
+    <footer class="w-full bg-black bg-opacity-70 text-white flex justify-around h-6">
         <div>
             &copy; @DateTime.Now.Year - Goc Nho Coffee
             <a href="https://github.com/PCHaiLam/CafeGocNho_63134417" target="_blank" class="hover:text-yellow-500">
@@ -104,4 +120,13 @@
             dropdown.classList.add("hidden");
         }
     });
+
+    //thông báo trả về
+    function closeNotification() {
+        const notification = document.getElementById('notification');
+        if (notification) {
+            notification.remove();
+        }
+    }
+    setTimeout(closeNotification, 3000);
 </script>

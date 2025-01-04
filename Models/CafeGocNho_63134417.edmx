@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="MABAN" />
           </Key>
-          <Property Name="MABAN" Type="int" Nullable="false" />
+          <Property Name="MABAN" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TINHTRANG" Type="smallint" />
         </EntityType>
         <EntityType Name="CHITIETHOADON">
@@ -21,6 +21,23 @@
           <Property Name="MAMH" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="SOLUONG" Type="int" />
           <Property Name="GIABAN" Type="int" />
+          <Property Name="GIAMGIA" Type="int" />
+          <Property Name="GHICHU" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="CHUCVU">
+          <Key>
+            <PropertyRef Name="MACV" />
+          </Key>
+          <Property Name="MACV" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="TENCV" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CHUCVU_QUYEN">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MACV" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="MAQUYEN" Type="nvarchar" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="HOADON">
           <Key>
@@ -30,11 +47,12 @@
           <Property Name="MABAN" Type="int" />
           <Property Name="MANV" Type="varchar" MaxLength="10" />
           <Property Name="THOIGIAN_NHANDON" Type="datetime" />
-          <Property Name="THOIGIAN_THANHTOAN" Type="date" />
+          <Property Name="THOIGIAN_THANHTOAN" Type="datetime" />
           <Property Name="THANHTOAN" Type="smallint" />
           <Property Name="GIAMGIA" Type="int" />
           <Property Name="NV_THANHTOAN" Type="varchar" MaxLength="10" />
           <Property Name="TRANGTHAI_XOA" Type="smallint" />
+          <Property Name="GHICHUHOADON" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="LOAIMATHANG">
           <Key>
@@ -65,11 +83,18 @@
           <Property Name="TENNV" Type="nvarchar" MaxLength="10" />
           <Property Name="EMAIL" Type="varchar" MaxLength="50" />
           <Property Name="DIACHI" Type="nvarchar" MaxLength="200" />
-          <Property Name="MATKHAU" Type="varchar" MaxLength="50" />
-          <Property Name="CHUCVU" Type="smallint" />
+          <Property Name="MATKHAU" Type="varchar" MaxLength="255" />
+          <Property Name="MACV" Type="nvarchar" MaxLength="20" />
           <Property Name="GIOITINH" Type="smallint" />
-          <Property Name="SDT" Type="varchar" MaxLength="15" />
-          <Property Name="CCCD" Type="varchar" MaxLength="12" />
+          <Property Name="SDT" Type="varchar" MaxLength="12" />
+          <Property Name="CCCD" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="QUYEN">
+          <Key>
+            <PropertyRef Name="MAQUYEN" />
+          </Key>
+          <Property Name="MAQUYEN" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="TENQUYEN" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <Association Name="FK_CHITIETH_CHI_TIET__MENU">
           <End Role="MENU" Type="Self.MENU" Multiplicity="1" />
@@ -92,6 +117,30 @@
             </Principal>
             <Dependent Role="CHITIETHOADON">
               <PropertyRef Name="MAHD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CHUCVU_QUYEN_CHUCVU">
+          <End Role="CHUCVU" Type="Self.CHUCVU" Multiplicity="1" />
+          <End Role="CHUCVU_QUYEN" Type="Self.CHUCVU_QUYEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHUCVU">
+              <PropertyRef Name="MACV" />
+            </Principal>
+            <Dependent Role="CHUCVU_QUYEN">
+              <PropertyRef Name="MACV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CHUCVU_QUYEN_QUYEN">
+          <End Role="QUYEN" Type="Self.QUYEN" Multiplicity="1" />
+          <End Role="CHUCVU_QUYEN" Type="Self.CHUCVU_QUYEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QUYEN">
+              <PropertyRef Name="MAQUYEN" />
+            </Principal>
+            <Dependent Role="CHUCVU_QUYEN">
+              <PropertyRef Name="MAQUYEN" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -143,21 +192,28 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="Menu_TimKiem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="MAMH" Type="varchar" Mode="In" />
-          <Parameter Name="TENMH" Type="nvarchar" Mode="In" />
-          <Parameter Name="GIACAmin" Type="varchar" Mode="In" />
-          <Parameter Name="GIACAmax" Type="varchar" Mode="In" />
-          <Parameter Name="DVT" Type="varchar" Mode="In" />
-          <Parameter Name="MALOAI" Type="varchar" Mode="In" />
-        </Function>
+        <Association Name="FK_NHANVIEN_CHUCVU">
+          <End Role="CHUCVU" Type="Self.CHUCVU" Multiplicity="0..1" />
+          <End Role="NHANVIEN" Type="Self.NHANVIEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHUCVU">
+              <PropertyRef Name="MACV" />
+            </Principal>
+            <Dependent Role="NHANVIEN">
+              <PropertyRef Name="MACV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="CafeGocNho_63134417ModelStoreContainer">
           <EntitySet Name="BAN" EntityType="Self.BAN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CHITIETHOADON" EntityType="Self.CHITIETHOADON" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CHUCVU" EntityType="Self.CHUCVU" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CHUCVU_QUYEN" EntityType="Self.CHUCVU_QUYEN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HOADON" EntityType="Self.HOADON" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LOAIMATHANG" EntityType="Self.LOAIMATHANG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MENU" EntityType="Self.MENU" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NHANVIEN" EntityType="Self.NHANVIEN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QUYEN" EntityType="Self.QUYEN" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_CHITIETH_CHI_TIET__MENU" Association="Self.FK_CHITIETH_CHI_TIET__MENU">
             <End Role="MENU" EntitySet="MENU" />
             <End Role="CHITIETHOADON" EntitySet="CHITIETHOADON" />
@@ -165,6 +221,14 @@
           <AssociationSet Name="FK_CHITIETH_PHIEU_XUA_HOADON" Association="Self.FK_CHITIETH_PHIEU_XUA_HOADON">
             <End Role="HOADON" EntitySet="HOADON" />
             <End Role="CHITIETHOADON" EntitySet="CHITIETHOADON" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CHUCVU_QUYEN_CHUCVU" Association="Self.FK_CHUCVU_QUYEN_CHUCVU">
+            <End Role="CHUCVU" EntitySet="CHUCVU" />
+            <End Role="CHUCVU_QUYEN" EntitySet="CHUCVU_QUYEN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CHUCVU_QUYEN_QUYEN" Association="Self.FK_CHUCVU_QUYEN_QUYEN">
+            <End Role="QUYEN" EntitySet="QUYEN" />
+            <End Role="CHUCVU_QUYEN" EntitySet="CHUCVU_QUYEN" />
           </AssociationSet>
           <AssociationSet Name="FK_HOADON_BAN_PHIEU_BAN" Association="Self.FK_HOADON_BAN_PHIEU_BAN">
             <End Role="BAN" EntitySet="BAN" />
@@ -181,6 +245,10 @@
           <AssociationSet Name="FK_MENU_REFERENCE_LOAIMATH" Association="Self.FK_MENU_REFERENCE_LOAIMATH">
             <End Role="LOAIMATHANG" EntitySet="LOAIMATHANG" />
             <End Role="MENU" EntitySet="MENU" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NHANVIEN_CHUCVU" Association="Self.FK_NHANVIEN_CHUCVU">
+            <End Role="CHUCVU" EntitySet="CHUCVU" />
+            <End Role="NHANVIEN" EntitySet="NHANVIEN" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -206,6 +274,8 @@
           <NavigationProperty Name="HOADON" Relationship="Self.FK_CHITIETH_PHIEU_XUA_HOADON" FromRole="CHITIETHOADON" ToRole="HOADON" />
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="GIABAN" Type="Int32" />
+          <Property Name="GIAMGIA" Type="Int32" />
+          <Property Name="GHICHU" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="HOADON">
           <Key>
@@ -223,7 +293,8 @@
           <NavigationProperty Name="NHANVIEN1" Relationship="CafeGocNho_63134417Model.FK_HOADON_NHANVIEN_THANHTOAN" FromRole="HOADON" ToRole="NHANVIEN" />
           <Property Name="TRANGTHAI_XOA" Type="Int16" />
           <Property Name="THOIGIAN_NHANDON" Type="DateTime" Precision="3" />
-          <Property Name="THOIGIAN_THANHTOAN" Type="DateTime" />
+          <Property Name="THOIGIAN_THANHTOAN" Type="DateTime" Precision="3" />
+          <Property Name="GHICHUHOADON" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="LOAIMATHANG">
           <Key>
@@ -257,13 +328,14 @@
           <Property Name="TENNV" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="EMAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="DIACHI" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="MATKHAU" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CHUCVU" Type="Int16" />
+          <Property Name="MATKHAU" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="GIOITINH" Type="Int16" />
-          <Property Name="SDT" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="CCCD" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="SDT" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="CCCD" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="HOADON" Relationship="Self.FK_HOADON_NHAN_VIEN_NHANVIEN" FromRole="NHANVIEN" ToRole="HOADON" />
           <NavigationProperty Name="HOADON1" Relationship="CafeGocNho_63134417Model.FK_HOADON_NHANVIEN_THANHTOAN" FromRole="NHANVIEN" ToRole="HOADON" />
+          <Property Name="MACV" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CHUCVU" Relationship="CafeGocNho_63134417Model.FK_NHANVIEN_CHUCVU" FromRole="NHANVIEN" ToRole="MACV" />
         </EntityType>
         <Association Name="FK_HOADON_BAN_PHIEU_BAN">
           <End Role="BAN" Type="Self.BAN" Multiplicity="0..1" />
@@ -371,6 +443,21 @@
             <End Role="NHANVIEN" EntitySet="NHANVIEN" />
             <End Role="HOADON" EntitySet="HOADON" />
           </AssociationSet>
+          <EntitySet Name="CHUCVU" EntityType="CafeGocNho_63134417Model.CHUCVU" />
+          <EntitySet Name="CHUCVU_QUYEN" EntityType="CafeGocNho_63134417Model.CHUCVU_QUYEN" />
+          <EntitySet Name="QUYEN" EntityType="CafeGocNho_63134417Model.QUYEN" />
+          <AssociationSet Name="FK_CHUCVU_QUYEN_CHUCVU" Association="CafeGocNho_63134417Model.FK_CHUCVU_QUYEN_CHUCVU">
+            <End Role="CHUCVU" EntitySet="CHUCVU" />
+            <End Role="CHUCVU_QUYEN" EntitySet="CHUCVU_QUYEN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NHANVIEN_CHUCVU" Association="CafeGocNho_63134417Model.FK_NHANVIEN_CHUCVU">
+            <End Role="MACV" EntitySet="CHUCVU" />
+            <End Role="NHANVIEN" EntitySet="NHANVIEN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CHUCVU_QUYEN_QUYEN" Association="CafeGocNho_63134417Model.FK_CHUCVU_QUYEN_QUYEN">
+            <End Role="QUYEN" EntitySet="QUYEN" />
+            <End Role="CHUCVU_QUYEN" EntitySet="CHUCVU_QUYEN" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_HOADON_NHANVIEN_THANHTOAN">
           <End Type="CafeGocNho_63134417Model.NHANVIEN" Role="NHANVIEN" Multiplicity="0..1" />
@@ -381,6 +468,69 @@
             </Principal>
             <Dependent Role="HOADON">
               <PropertyRef Name="NV_THANHTOAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CHUCVU">
+          <Key>
+            <PropertyRef Name="MACV" />
+          </Key>
+          <Property Name="MACV" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="TENCV" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CHUCVU_QUYEN" Relationship="CafeGocNho_63134417Model.FK_CHUCVU_QUYEN_CHUCVU" FromRole="CHUCVU" ToRole="CHUCVU_QUYEN" />
+          <NavigationProperty Name="NHANVIEN" Relationship="CafeGocNho_63134417Model.FK_NHANVIEN_CHUCVU" FromRole="MACV" ToRole="NHANVIEN" />
+        </EntityType>
+        <EntityType Name="CHUCVU_QUYEN">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MACV" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MAQUYEN" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CHUCVU" Relationship="CafeGocNho_63134417Model.FK_CHUCVU_QUYEN_CHUCVU" FromRole="CHUCVU_QUYEN" ToRole="CHUCVU" />
+          <NavigationProperty Name="QUYEN" Relationship="CafeGocNho_63134417Model.FK_CHUCVU_QUYEN_QUYEN" FromRole="CHUCVU_QUYEN" ToRole="QUYEN" />
+        </EntityType>
+        <EntityType Name="QUYEN">
+          <Key>
+            <PropertyRef Name="MAQUYEN" />
+          </Key>
+          <Property Name="MAQUYEN" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TENQUYEN" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CHUCVU_QUYEN" Relationship="CafeGocNho_63134417Model.FK_CHUCVU_QUYEN_QUYEN" FromRole="QUYEN" ToRole="CHUCVU_QUYEN" />
+        </EntityType>
+        <Association Name="FK_CHUCVU_QUYEN_CHUCVU">
+          <End Type="CafeGocNho_63134417Model.CHUCVU" Role="CHUCVU" Multiplicity="1" />
+          <End Type="CafeGocNho_63134417Model.CHUCVU_QUYEN" Role="CHUCVU_QUYEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHUCVU">
+              <PropertyRef Name="MACV" />
+            </Principal>
+            <Dependent Role="CHUCVU_QUYEN">
+              <PropertyRef Name="MACV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NHANVIEN_CHUCVU">
+          <End Type="CafeGocNho_63134417Model.CHUCVU" Role="MACV" Multiplicity="0..1" />
+          <End Type="CafeGocNho_63134417Model.NHANVIEN" Role="NHANVIEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MACV">
+              <PropertyRef Name="MACV" />
+            </Principal>
+            <Dependent Role="NHANVIEN">
+              <PropertyRef Name="MACV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CHUCVU_QUYEN_QUYEN">
+          <End Type="CafeGocNho_63134417Model.QUYEN" Role="QUYEN" Multiplicity="1" />
+          <End Type="CafeGocNho_63134417Model.CHUCVU_QUYEN" Role="CHUCVU_QUYEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QUYEN">
+              <PropertyRef Name="MAQUYEN" />
+            </Principal>
+            <Dependent Role="CHUCVU_QUYEN">
+              <PropertyRef Name="MAQUYEN" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -401,6 +551,8 @@
           <EntitySetMapping Name="CHITIETHOADON">
             <EntityTypeMapping TypeName="CafeGocNho_63134417Model.CHITIETHOADON">
               <MappingFragment StoreEntitySet="CHITIETHOADON">
+                <ScalarProperty Name="GHICHU" ColumnName="GHICHU" />
+                <ScalarProperty Name="GIAMGIA" ColumnName="GIAMGIA" />
                 <ScalarProperty Name="GIABAN" ColumnName="GIABAN" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="MAHD" ColumnName="MAHD" />
@@ -412,6 +564,7 @@
           <EntitySetMapping Name="HOADON">
             <EntityTypeMapping TypeName="CafeGocNho_63134417Model.HOADON">
               <MappingFragment StoreEntitySet="HOADON">
+                <ScalarProperty Name="GHICHUHOADON" ColumnName="GHICHUHOADON" />
                 <ScalarProperty Name="THOIGIAN_THANHTOAN" ColumnName="THOIGIAN_THANHTOAN" />
                 <ScalarProperty Name="THOIGIAN_NHANDON" ColumnName="THOIGIAN_NHANDON" />
                 <ScalarProperty Name="TRANGTHAI_XOA" ColumnName="TRANGTHAI_XOA" />
@@ -449,20 +602,44 @@
           <EntitySetMapping Name="NHANVIEN">
             <EntityTypeMapping TypeName="CafeGocNho_63134417Model.NHANVIEN">
               <MappingFragment StoreEntitySet="NHANVIEN">
+                <ScalarProperty Name="MACV" ColumnName="MACV" />
                 <ScalarProperty Name="MANV" ColumnName="MANV" />
                 <ScalarProperty Name="HONV" ColumnName="HONV" />
                 <ScalarProperty Name="TENNV" ColumnName="TENNV" />
                 <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
                 <ScalarProperty Name="DIACHI" ColumnName="DIACHI" />
                 <ScalarProperty Name="MATKHAU" ColumnName="MATKHAU" />
-                <ScalarProperty Name="CHUCVU" ColumnName="CHUCVU" />
                 <ScalarProperty Name="GIOITINH" ColumnName="GIOITINH" />
                 <ScalarProperty Name="SDT" ColumnName="SDT" />
                 <ScalarProperty Name="CCCD" ColumnName="CCCD" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="Menu_TimKiem" FunctionName="CafeGocNho_63134417Model.Store.Menu_TimKiem" />
+          <EntitySetMapping Name="CHUCVU">
+            <EntityTypeMapping TypeName="CafeGocNho_63134417Model.CHUCVU">
+              <MappingFragment StoreEntitySet="CHUCVU">
+                <ScalarProperty Name="TENCV" ColumnName="TENCV" />
+                <ScalarProperty Name="MACV" ColumnName="MACV" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CHUCVU_QUYEN">
+            <EntityTypeMapping TypeName="CafeGocNho_63134417Model.CHUCVU_QUYEN">
+              <MappingFragment StoreEntitySet="CHUCVU_QUYEN">
+                <ScalarProperty Name="MAQUYEN" ColumnName="MAQUYEN" />
+                <ScalarProperty Name="MACV" ColumnName="MACV" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QUYEN">
+            <EntityTypeMapping TypeName="CafeGocNho_63134417Model.QUYEN">
+              <MappingFragment StoreEntitySet="QUYEN">
+                <ScalarProperty Name="TENQUYEN" ColumnName="TENQUYEN" />
+                <ScalarProperty Name="MAQUYEN" ColumnName="MAQUYEN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

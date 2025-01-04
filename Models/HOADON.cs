@@ -29,6 +29,7 @@ namespace CafeGocNho_63134417.Models
         public Nullable<short> TRANGTHAI_XOA { get; set; }
         public Nullable<System.DateTime> THOIGIAN_NHANDON { get; set; }
         public Nullable<System.DateTime> THOIGIAN_THANHTOAN { get; set; }
+        public string GHICHUHOADON { get; set; }
     
         public virtual BAN BAN { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

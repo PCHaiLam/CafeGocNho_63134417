@@ -18,11 +18,6 @@ namespace CafeGocNho_63134417.Controllers
         // GET: BANs_63134417
         public ActionResult Index(int page = 1, string filter = "all", int? tableId = null)
         {
-            if (Session["Ten"] == null || Session["Ten"].ToString() == "")
-            {
-                return RedirectToAction("DangNhap", "PhanQuyen_63134417");
-            }
-
             int pageSize = 24; // số lượng bàn trogn 1 trang
             IQueryable<BAN> tablesQuery = db.BAN;
 
@@ -56,7 +51,6 @@ namespace CafeGocNho_63134417.Controllers
                     .Take(pageSize)
                     .ToList();
 
-
                 ViewBag.CurrentPage = page;
                 ViewBag.TotalPages = totalPages;
                 ViewBag.CurrentPage = page;
@@ -67,109 +61,46 @@ namespace CafeGocNho_63134417.Controllers
                 }
             else
             {
-                //ViewBag.NoTable = "Không có bàn nào để hiển thị.";
-                return View(new List<BAN>()); // Trả về danh sách trống
+                return View(new List<BAN>());
             }
         }
         ////ThongKeBan_63134417
         public ActionResult ThongKeBan_63134417()
         {
-            return View()
-;
-        }
-        // GET: BANs_63134417/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            BAN bAN = db.BAN.Find(id);
-            if (bAN == null)
-            {
-                return HttpNotFound();
-            }
-            return View(bAN);
+            var table = db.BAN.ToList();
+            return View(table);
         }
 
-        // GET: BANs_63134417/Create
+        [HttpPost]
         public ActionResult Create()
         {
-            return View();
-        }
+            var table = new BAN
+            {
+                TINHTRANG = 0
+            };
 
-        // POST: BANs_63134417/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "MABAN,TINHTRANG")] BAN bAN)
-        {
-            if (ModelState.IsValid)
-            {
-                db.BAN.Add(bAN);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            db.BAN.Add(table);
+            db.SaveChanges();
+            Session["Notification"] = "Thêm bàn thành công!";
 
-            return View(bAN);
-        }
-
-        // GET: BANs_63134417/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            BAN bAN = db.BAN.Find(id);
-            if (bAN == null)
-            {
-                return HttpNotFound();
-            }
-            return View(bAN);
-        }
-
-        // POST: BANs_63134417/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "MABAN,TINHTRANG")] BAN bAN)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(bAN).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(bAN);
-        }
-
-        // GET: BANs_63134417/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            BAN bAN = db.BAN.Find(id);
-            if (bAN == null)
-            {
-                return HttpNotFound();
-            }
-            return View(bAN);
+            return RedirectToAction("ThongKeBan_63134417");
         }
 
         // POST: BANs_63134417/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        [HttpPost]
+        public ActionResult DeleteConfirmed(int MABAN)
         {
-            BAN bAN = db.BAN.Find(id);
-            db.BAN.Remove(bAN);
+            var table = db.BAN.Find(MABAN);
+            if (table.TINHTRANG != 0)
+            {
+                Session["Notification"] = "Bàn đang có khách, không thể xóa!";
+                return RedirectToAction("ThongKeBan_63134417");
+            }
+
+            db.BAN.Remove(table);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            Session["Notification"] = "Xóa bàn thành công!";
+            return RedirectToAction("ThongKeBan_63134417");
         }
 
         protected override void Dispose(bool disposing)

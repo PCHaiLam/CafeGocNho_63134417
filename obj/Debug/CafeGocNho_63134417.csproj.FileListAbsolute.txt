@@ -81,8 +81,6 @@ C:\Users\Admin\Documents\GitHub\CSharp\MVC\CafeGocNho_63134417\obj\Debug\CafeGoc
 C:\Users\Admin\Documents\GitHub\CSharp\MVC\CafeGocNho_63134417\obj\Debug\CafeGocN.A81DC2B2.Up2Date
 C:\Users\Admin\Documents\GitHub\CSharp\MVC\CafeGocNho_63134417\obj\Debug\CafeGocNho_63134417.dll
 C:\Users\Admin\Documents\GitHub\CSharp\MVC\CafeGocNho_63134417\obj\Debug\CafeGocNho_63134417.pdb
-C:\Users\Admin\Documents\GitHub\CafeGocNho_63134417\obj\Debug\CafeGocNho_63134417.csproj.AssemblyReference.cache
-C:\Users\Admin\Documents\GitHub\CafeGocNho_63134417\obj\Debug\CafeGocNho_63134417.csproj.CoreCompileInputs.cache
 C:\Users\Admin\Documents\GitHub\CafeGocNho_63134417\bin\CafeGocNho_63134417.dll.config
 C:\Users\Admin\Documents\GitHub\CafeGocNho_63134417\bin\CafeGocNho_63134417.dll
 C:\Users\Admin\Documents\GitHub\CafeGocNho_63134417\bin\CafeGocNho_63134417.pdb
@@ -161,6 +159,8 @@ C:\Users\Admin\Documents\GitHub\CafeGocNho_63134417\bin\System.Web.WebPages.Razo
 C:\Users\Admin\Documents\GitHub\CafeGocNho_63134417\bin\Newtonsoft.Json.xml
 C:\Users\Admin\Documents\GitHub\CafeGocNho_63134417\bin\Antlr3.Runtime.pdb
 C:\Users\Admin\Documents\GitHub\CafeGocNho_63134417\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\Admin\Documents\GitHub\CafeGocNho_63134417\obj\Debug\CafeGocNho_63134417.csproj.AssemblyReference.cache
+C:\Users\Admin\Documents\GitHub\CafeGocNho_63134417\obj\Debug\CafeGocNho_63134417.csproj.CoreCompileInputs.cache
 C:\Users\Admin\Documents\GitHub\CafeGocNho_63134417\obj\Debug\CafeGocN.A81DC2B2.Up2Date
 C:\Users\Admin\Documents\GitHub\CafeGocNho_63134417\obj\Debug\CafeGocNho_63134417.dll
 C:\Users\Admin\Documents\GitHub\CafeGocNho_63134417\obj\Debug\CafeGocNho_63134417.pdb

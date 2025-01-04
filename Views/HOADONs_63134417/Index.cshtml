@@ -5,18 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     int totalQuantity = 0;
     int totalPrice = 0;
-
-    //kiểm tra phân quyền
-    if (Session["Role"] == null || Session["Role"].ToString() == "Unknown")
-    {
-        Response.Redirect("~/PhanQuyen_63134417/DangNhap");
-    }
 }
 
-<div class="h-full grid grid-cols-3">
-    <div class="col-span-2">
-        <div class="h-20 grid grid-cols-3 mx-4 items-center">
-            <div class="col-span-1 grid grid-cols-2">
+<div class="h-full grid grid-cols-1 md:grid-cols-3">
+    <div class="md:col-span-2">
+        <div class="grid grid-cols-1 md:grid-cols-3 mx-4 items-center">
+            <div class="col-span-1 grid grid-cols-2 mb-4 md:mb-0">
                 <div class="">
                     <div class="text-xl font-bold w-[220px]">Hóa đơn @ViewBag.BillId</div>
                     @if (ViewBag.TableId != null)
@@ -28,11 +22,11 @@
                         <h2 class="text-xl font-semibold ">Chọn bàn để xem chi tiết</h2>
                     }
                 </div>
-                
+
             </div>
             <form id="searchForm" method="get" class="flex justify-around col-span-2">
-                <input type="text" name="search" placeholder="Tìm kiếm món ăn..." onfocus="showProductList()" oninput="filterProducts()" class="w-72 h-full border px-2 py-1 rounded-md focus:ring-2 focus:ring-yellow-500">
-                <ul id="productList" class="mt-10 px-2 w-[500px] h-[600px] hidden absolute z-10 rounded-xl border-2 bg-white max-h-[500px] overflow-scroll overflow-x-hidden">
+                <input type="text" name="search" placeholder="Tìm kiếm món ăn..." onfocus="showProductList()" oninput="filterProducts()" class="w-full md:w-72 h-full border px-2 py-1 rounded-md focus:ring-2 focus:ring-yellow-500">
+                <ul id="productList" class="mt-10 px-2 w-full md:w-[500px] hidden absolute z-10 rounded-xl border-2 bg-white max-h-[500px] overflow-scroll overflow-x-hidden">
                     @foreach (var item in ViewBag.Menu)
                     {
                         <li class="product-item h-24 w-full flex items-center cursor-pointer active:bg-yellow-200" onclick="addToCart('@ViewBag.BillId','@item.MAMH', '@item.TENMH', '@item.DVT', @item.GIACA)">
@@ -49,33 +43,32 @@
                         </li>
                     }
                 </ul>
-                <i title="Lịch sử nhập đơn" class="fa-solid fa-rotate-left text-3xl hover:text-green-400 cursor-pointer"></i>
+                <i title="Lịch sử nhập đơn" class="fa-solid fa-rotate-left text-3xl hover:text-green-400 cursor-pointer ml-4"></i>
             </form>
         </div>
-
-        <div class="h-[500px] mt-[-5px] ml-4 p-2 bg-white rounded-3xl shadow-lg overflow-scroll overflow-x-hidden">
+        <div class="mt-4 md:mt-[-5px] ml-4 p-2 min-h-[500px] bg-white rounded-3xl shadow-lg overflow-scroll overflow-x-hidden">
             <ul>
                 @foreach (var item in ViewBag.CTHD)
                 {
                     totalQuantity += item.SOLUONG;
                     totalPrice += item.MENU.GIACA * item.SOLUONG;
 
-                    <li class="flex items-center py-2 border-b">
+                    <li class="flex flex-col md:flex-row items-center py-2 border-b">
                         <form class="mx-1" method="post" action="@Url.Action("Xoa_63134417", "HOADONs_63134417")" onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
                             <input type="hidden" name="maBan" value="@ViewBag.TableId" />
                             <input type="hidden" name="maHD" value="@ViewBag.BillId" />
                             <input type="hidden" name="maMH" value="@item.MENU.MAMH" />
-                            <button type="submit" class="mr-2" onclick="removeFromCart(item.MaMH)"  name="removeInBillDetail">🗑️</button>
+                            <button type="submit" class="mr-2" onclick="removeFromCart(item.MaMH)" name="removeInBillDetail">🗑️</button>
                         </form>
-                        
+
                         <span class="hidden">@item.MENU.MAMH</span>
-                        <span class="w-[480px]">@item.MENU.TENMH</span>
+                        <span class="w-full md:w-[480px] mb-2 md:mb-0">@item.MENU.TENMH</span>
 
-                        <button class="px-2 py-1 border rounded" onclick="updateQuantity(item.MaMH, item.SoLuong - 1)">➖</button>
-
-                        <input type="number" class="w-12 text-center mx-2 border rounded" value="@item.SOLUONG" min="@item.SOLUONG" oninput="updateQuantity(item.MaMH, parseInt(this.value) || 1)" />
-
-                        <button class="px-2 py-1 border rounded" onclick="updateQuantity(item.MaMH, item.SoLuong + 1)">➕</button>
+                        <div class="flex items-center">
+                            <button class="px-2 py-1 border rounded" onclick="updateQuantity(item.MaMH, item.SoLuong - 1)">➖</button>
+                            <input type="number" class="w-12 text-center mx-2 border rounded" value="@item.SOLUONG" min="@item.SOLUONG" oninput="updateQuantity(item.MaMH, parseInt(this.value) || 1)" />
+                            <button class="px-2 py-1 border rounded" onclick="updateQuantity(item.MaMH, item.SoLuong + 1)">➕</button>
+                        </div>
 
                         <span class="ml-4">@item.MENU.GIACA</span>
                         <span class="ml-4">@(@item.MENU.GIACA * @item.SOLUONG)</span>
@@ -83,64 +76,71 @@
                 }
             </ul>
             <ul id="BillDetail">
-                
             </ul>
         </div>
     </div>
-    <div class="ml-4 w-full col-span-1 grid text-right">
+    <div class="mt-4 md:mt-0 ml-0 md:ml-4 w-full md:col-span-1 grid text-right">
 
         <p id="dateTimeDisplay" class="h-8"></p>
         <div class="grid grid-cols-2 mx-4">
-            <div class="text-left" title="Người nhận đơn"> Người nhận đơn <i class="fa-solid fa-user p-2 rounded-2xl border-2 "></i></div> <p>@Model.FirstOrDefault().NHANVIEN.TENNV</p>
+            <div class="text-left" title="Người nhận đơn"> Người nhận đơn <i class="fa-solid fa-user p-2 rounded-2xl border-2 "></i></div> <p>@ViewBag.TENNV</p>
             <p class="text-left">Tổng hàng</p><p><span title="Tổng sản phẩm" class="px-3 py-1 border-2 rounded-xl">@totalQuantity</span></p>
             <p class="text-left">Tổng tiền hàng</p><p>@totalPrice.ToString("N0")</p>
             <p class="text-left">Giảm giá</p>
-            <div class="flex h-8 justify-end">
-                <input type="number" id="discountInput" class="border rounded px-2 py-1 w-16" min="0" step="1" value="@Model.FirstOrDefault().GIAMGIA" />
-                <button onclick="applyDiscount()" class="border-2">Giảm</button>
-            </div>
-            <p class="text-left">Tổng hóa đơn</p><p id="totalPriceDisplay">@totalPrice.ToString("N0")</p>
+            <form method="post" action="@Url.Action("Discount_63134417", "HOADONs_63134417")" class="flex h-8 justify-end">
+                <input type="hidden" name="maHD" value="@ViewBag.BillId" />
+                <input type="number" id="discountInput" name="discount" class="border rounded px-2 py-1 w-16" min="0" step="1" max="100" value="@ViewBag.Discount" />
+                @if (ViewBag.ExistBill == false)
+                {
+                    <button disabled type="submit" class="border-2 cursor-not-allowed">Giảm</button>
+                }
+                else
+                {
+                    <button type="submit" class="border-2">Giảm</button>
+                }
+            </form>
+            <p class="text-left">Tổng hóa đơn</p><p>@((totalPrice * (1 - (Convert.ToDecimal(ViewBag.Discount) / 100))).ToString("N0"))</p>
         </div>
 
-        <div class="h-16 flex justify-between font-bold text-white items-center">
-            @if (Session["Role"].ToString() == "Nhân viên")
-            {
-                <button disabled class="w-[140px] p-3 border rounded-3xl bg-gray-400 opacity-30"><i class="fa-solid fa-print"></i> In tạm tính</button>
-                <button disabled class="w-[140px] p-3 border rounded-3xl bg-green-400 opacity-30"><i class="fa-solid fa-dollar-sign"></i> Thanh toán</button>
-            }
-            else
-            {
-                <a href="javascript:void(0);"
-                   onclick="window.location.href='@Url.Action("Index", "CHITIETHOADONs_63134417", new { tableId = ViewBag.TableId, billId = ViewBag.BillId })' + '&discount=' + document.getElementById('discountInput').value;"
-                   class="w-[140px] p-3 border rounded-3xl bg-gray-400 active:bg-gray-500 hover:text-yellow-300">
-                    <i class="fa-solid fa-print"></i> In tạm tính
-                </a>
+        <div class="mt-4 grid grid-cols-1 md:flex md:justify-between font-bold text-white items-center">
+            <!-- Nút In tạm tính -->
+            <a href="@Url.Action("Index", "CHITIETHOADONs_63134417", new { MAHD = ViewBag.BillId })"
+               class="w-full md:w-[140px] mb-4 md:mb-0 p-3 border rounded-3xl bg-gray-400 active:bg-gray-500 hover:text-yellow-300
+       @(Session["Role"]?.ToString() == "employee" || ViewBag.ExistBill == false ? "pointer-events-none opacity-20" : "")">
+                <i class="fa-solid fa-print"></i> In tạm tính
+            </a>
 
-                <form method="post" action="@Url.Action("ThanhToan_63134417", "HOADONs_63134417")">
-                    <input type="hidden" name="maBan" value="@ViewBag.TableId" />
-                    <input type="hidden" name="maHD" value="@ViewBag.BillId" />
-                    <input type="hidden" id="discountValue" name="discount" />
-                    <input type="hidden" name="maNV" value="@Session["MaNV"]"/>
-                    <button type="submit" class="w-[140px] p-3 border rounded-3xl bg-green-400 active:bg-green-500 hover:text-yellow-300"><i class="fa-solid fa-dollar-sign"></i> Thanh toán</button>
-                </form>
-            }
+            <!-- Nút Thanh toán -->
+            <form method="post" action="@Url.Action("ThanhToan_63134417", "HOADONs_63134417")"
+                  class="w-full md:w-[140px] mb-4 md:mb-0">
+                <input type="hidden" name="maBan" value="@ViewBag.TableId" />
+                <input type="hidden" name="maHD" value="@ViewBag.BillId" />
+                <input type="hidden" name="maNV" value="@Session["MaNV"]" />
+                <button type="submit"
+                        class="w-full p-3 border rounded-3xl bg-green-400 active:bg-green-500 hover:text-yellow-300
+                @(Session["Role"]?.ToString() == "employee" || ViewBag.ExistBill == false ? "pointer-events-none opacity-20" : "")">
+                    <i class="fa-solid fa-dollar-sign"></i> Thanh toán
+                </button>
+            </form>
 
-            @*@if (ViewBag.Pay == false)
-        {*@
-            <form method="post" action="@Url.Action("XacNhan_63134417", "HOADONs_63134417")">
+            <!-- Nút Xác nhận -->
+            <form method="post" action="@Url.Action("XacNhan_63134417", "HOADONs_63134417")"
+                  class="w-full md:w-[140px]">
                 <input type="hidden" name="maBan" value="@ViewBag.TableId" />
                 <input type="hidden" name="maHD" value="@ViewBag.BillId" />
                 <input type="hidden" name="maNV" value="@Session["MaNV"]" />
                 <input type="hidden" id="cartData" name="cartData" value="" />
-                <button id="confirmButton" disabled onclick="submitCart()" type="submit" class="w-[140px] p-3 border rounded-3xl bg-blue-400 active:bg-blue-500 hover:text-yellow-300"><i class="fa-solid fa-bell-concierge"></i> Xác nhận</button>
+                <button id="confirmButton"
+                        disabled="@ViewBag.ExistBill == false"
+                        onclick="submitCart()"
+                        type="submit"
+                        class="w-full p-3 border rounded-3xl bg-blue-400 active:bg-blue-500 hover:text-yellow-300">
+                    <i class="fa-solid fa-bell-concierge"></i> Xác nhận
+                </button>
             </form>
-            @*}
-        else
-        {
-            <button disabled type="submit" class="w-[140px] p-3 border rounded-3xl bg-blue-400 opacity-30"><i class="fa-solid fa-bell-concierge"></i> Xác nhận</button>
-        }*@
-
         </div>
+
+
     </div>
 </div>
 
@@ -188,7 +188,7 @@
                 MaMH: maMH,
                 TenMH: tenMH,
                 DVT: dvt,
-                Gia: gia,
+                GiaBan: gia,
                 SoLuong: 1
             });
         }
@@ -206,7 +206,7 @@
         productList.innerHTML = "";
         cart.forEach(item => {
             const li = document.createElement("li");
-            li.className = "flex items-center py-2 border-b";
+            li.className = "flex flex-col md:flex-row items-center py-2 border-b";
 
             // Xóa sản phẩm
             const deleteButton = document.createElement("button");
@@ -216,7 +216,7 @@
 
             // Tên món ăn và thông tin khác
             const itemName = document.createElement("span");
-            itemName.className = "w-[480px]";
+            itemName.className = "w-full md:w-[480px] mb-2 md:mb-0";
             itemName.textContent = `${item.TenMH}`;
 
             // Phần điều chỉnh số lượng
@@ -241,11 +241,11 @@
             // Hiển thị giá và tổng giá
             const price = document.createElement("span");
             price.className = "ml-4";
-            price.textContent = item.Gia.toLocaleString();
+            price.textContent = item.GiaBan.toLocaleString();
 
             const totalPrice = document.createElement("span");
             totalPrice.className = "ml-4";
-            totalPrice.textContent = (item.Gia * item.SoLuong).toLocaleString();
+            totalPrice.textContent = (item.GiaBan * item.SoLuong).toLocaleString();
 
             // Thêm tất cả vào li
             li.appendChild(deleteButton);
@@ -260,7 +260,6 @@
             productList.appendChild(li);
         });
     }
-
 
     function submitCart() {
         document.getElementById('cartData').value = JSON.stringify(cart);
@@ -278,19 +277,5 @@
     function removeFromCart(maMH) {
         cart = cart.filter(p => p.MaMH !== maMH);
         renderCart();
-    }
-
-    let totalPrice = @totalPrice;
-
-    function discountBill(discount, price) {
-        return price - (discount * price / 100);
-    }
-
-    function applyDiscount() {
-        const discount = parseInt(document.getElementById("discountInput").value) || 0;
-        const discountedTotal = discountBill(discount, totalPrice);
-
-        document.getElementById("totalPriceDisplay").innerText = discountedTotal.toLocaleString();
-        document.getElementById("discountValue").value = discount;
     }
 </script>
